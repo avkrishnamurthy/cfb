@@ -1,13 +1,18 @@
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions, authentication
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Product
 from .serializers import ProductSeralizer
 from django.shortcuts import get_object_or_404
+from api.mixins import StaffGroupPermissionMixin, UserQuerySetMixin
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+from api.authentication import TokenAuthentication
+
+class ProductListCreateAPIView(UserQuerySetMixin, StaffGroupPermissionMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSeralizer
+    # remove if I want all authenticated users to have access, or in the mixin
+    # permission_classes = [permissions.IsAdminUser, IsStaffGroupPermission]
 
     #only called for CreateAPIView
     #Overrides default perform_create
@@ -15,15 +20,23 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
         # Say I wanted to assign a user for this serializer instance
         # serializer.save(user=self.request.user)
         #Can also send django signal here - aka thing that lets user know something has happened
-        
+        #email = serializer.validated_data.pop('email')
+        #print(email)
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content')
         if not content: content=title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user, content=content)
 
+    # def get_queryset(self, *args, **kwargs):
+    #     qs = super().get_queryset(*args, **kwargs)
 
+    #     #if not user.is_authenticated:
+    #     #   return Product.objects.none()
+    #     request = self.request
+    #     return qs.filter(user=request.user)
+        
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(UserQuerySetMixin, StaffGroupPermissionMixin, generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSeralizer
     #Detail view does lookup on one item in queryset
@@ -31,20 +44,20 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 
     #Products.objects.get(pk=pk)
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(UserQuerySetMixin, StaffGroupPermissionMixin,generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSeralizer
     lookup_field = 'pk'
+    # permission_classes = [permissions.DjangoModelPermissions]
     
     def perform_update(self, serializer):
-        #Fix to make it have some custom behavior before saving - not necessary though
-        instance = serializer.save()
-        if not serializer.content:
-            serializer.content = serializer.title
-        ##serializer.save()
+        #Add some custom behavior if you want
+        if not serializer.validated_data.get('content'):
+            serializer.validated_data['content'] = serializer.validated_data.get('title')
+        serializer.save()
 
 
-class ProductDestroyAPIView(generics.DestroyAPIView):
+class ProductDestroyAPIView(UserQuerySetMixin, StaffGroupPermissionMixin,generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSeralizer
     lookup_field = 'pk'
