@@ -1,44 +1,36 @@
 // import axios from 'axios';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const Login = ({onLogin}) => {
+const Register = () => {
   const [username, setUsername] = useState("");
+  const[email, setEmail] = useState("")
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/token/", {
+      const response = await fetch("http://localhost:8000/api/users/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, email }),
       });
+      console.log("response", response)
+      
       const data = await response.json();
-      const { access, refresh } = data;
-      // Store tokens in localStorage
-      localStorage.setItem("access", access);
-      localStorage.setItem("refresh", refresh);
-      if (access!=null && refresh!=null) {
-        onLogin();
-        navigate(`/product-list/${username}`)
-        return
-      }
-      alert("Invalid credentials")
-      // Set authentication state to true (user is logged in)
-      // You can implement this using context or Redux
-      // setAuthenticated(true);
+      console.log("data", data)
+      navigate("/login")
 
     } catch (error) {
-      console.error("Login failed: ", error);
+      console.error("Registration failed: ", error);
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      <h2>Create Account</h2>
+      <form onSubmit={handleRegister}>
         <label>
           Username:
           <input
@@ -57,10 +49,19 @@ const Login = ({onLogin}) => {
           />
         </label>
         <br />
-        <button type="submit">Login</button>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <br />
+        <button type="submit">Create Account</button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

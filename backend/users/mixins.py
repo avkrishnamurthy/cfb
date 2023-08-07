@@ -1,10 +1,3 @@
-from rest_framework import permissions
-from .permissions import IsStaffGroupPermission
-
-class StaffGroupPermissionMixin():
-    permission_classes = [permissions.IsAdminUser, IsStaffGroupPermission]
-
-
 class UserQuerySetMixin():
     user_field = 'user'
     allow_staff_view = False
@@ -17,4 +10,3 @@ class UserQuerySetMixin():
         if self.allow_staff_view and user.is_staff:
             return qs
         return qs.filter(**lookup_data)
-

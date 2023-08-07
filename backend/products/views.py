@@ -8,7 +8,7 @@ from api.mixins import StaffGroupPermissionMixin, UserQuerySetMixin
 
 from api.authentication import TokenAuthentication
 
-class ProductListCreateAPIView(UserQuerySetMixin, StaffGroupPermissionMixin, generics.ListCreateAPIView):
+class ProductListCreateAPIView(UserQuerySetMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSeralizer
     # remove if I want all authenticated users to have access, or in the mixin
