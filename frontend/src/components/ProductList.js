@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const ProductList = () => {
-  const [products, setProducts] = useState(["hi"]);
+  const [products, setProducts] = useState([]);
   const accessToken = localStorage.getItem("access");
   let { username } = useParams();
   useEffect(() => {

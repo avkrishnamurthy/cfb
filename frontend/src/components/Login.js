@@ -5,6 +5,22 @@ const Login = ({onLogin}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
+
+  const fetchID = async (e) => {
+    try {
+        const response = await fetch(`http://localhost:8000/api/users/search/?username=${username}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+        const data = await response.json();
+        localStorage.setItem("user_id", data[0].id)
+    }
+    catch {
+        console.error("Fetching user id: ", e);
+    }
+  }
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -16,12 +32,16 @@ const Login = ({onLogin}) => {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
+      console.log(response)
       const { access, refresh } = data;
       // Store tokens in localStorage
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
-      if (access!=null && refresh!=null) {
+      if (response.status == 200) {
+        localStorage.setItem("loggedIn", true)
+        // localStorage.setItem()
         onLogin();
+        fetchID();
         navigate(`/product-list/${username}`)
         return
       }
