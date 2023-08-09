@@ -29,7 +29,7 @@ const FavoriteTeam = ({user_id}) => {
     <div>
       {favoriteTeam ? (
         <div>
-            <p> fav tema {favoriteTeam.school}</p>
+            <p> {favoriteTeam.school}</p>
             {favoriteTeam.logos && favoriteTeam.logos[0] && (
             <img src={favoriteTeam.logos[0]} alt="Team Logo" />
           )}

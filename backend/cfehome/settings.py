@@ -14,10 +14,14 @@ from pathlib import Path
 import datetime
 from dotenv import load_dotenv
 from os import getenv
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_TIMEZONE = "America/New_York"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -134,7 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/New_York"
 
 USE_I18N = True
 
@@ -168,4 +172,15 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ['Bearer'],
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=3),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=5),
+}
+
+CELERY_BEAT_SCHEDULE = {
+    'Fetch_games_schedule': {
+        'task': 'cfbdata.tasks.fetch_games',
+        'schedule': 30,
+    },
+    'Lock_games_schedule': {
+        'task': 'cfbdata.tasks.lock_games',
+        'schedule': crontab(minute="*/5")
+    }
 }

@@ -21,7 +21,27 @@ class FavoriteTeam(models.Model):
     user = models.ForeignKey(User, default=1, null=True, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
-# class WeeklyPicks
+
+class Game(models.Model):
+    game_id = models.IntegerField()
+    year = models.IntegerField()
+    week = models.IntegerField()
+    home = models.CharField()
+    away = models.CharField()
+    home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='home_games')
+    away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='away_games')
+    line = models.CharField(null=True, blank=True)
+    home_points = models.IntegerField(null=True, blank=True)
+    away_points = models.IntegerField(null=True, blank=True)
+    lock_time = models.DateTimeField()  # Store the calculated lock time here
+    locked = models.BooleanField(default=False)
+
+class Prediction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    home_points_prediction = models.IntegerField()
+    away_points_prediction = models.IntegerField()
+    score = models.IntegerField(null=True, blank=True)
 
 
     

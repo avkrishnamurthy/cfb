@@ -56,6 +56,8 @@ class FavoriteTeamDetailAPIView(UserQuerySetMixin, generics.RetrieveAPIView):
         self.check_object_permissions(self.request, obj)
         return obj
 
+# class GamesListAPIView(generics.ListAPIView):
+
 
 # class WeeklyPicksCreateAPIView(generics.CreateAPIView):
 

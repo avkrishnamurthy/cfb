@@ -1,37 +1,31 @@
-import os
+from datetime import datetime, timedelta
+import heapq
 import cfbd
 from cfbd.rest import ApiException
 from dotenv import load_dotenv
+import os
+import requests
+from bs4 import BeautifulSoup
 
 load_dotenv()
-cfbd_configuration = cfbd.Configuration()
-cfbd_configuration.api_key['Authorization'] = os.getenv('CFBD_API_KEY')
-cfbd_configuration.api_key_prefix['Authorization'] = 'Bearer'
+configuration = cfbd.Configuration()
+CFBD_API_KEY = os.getenv('CFBD_API_KEY')
+configuration.api_key['Authorization'] = CFBD_API_KEY
+configuration.api_key_prefix['Authorization'] = 'Bearer'
 
-# List of conferences to fetch teams for
-conferences = ['ACC', 'B12', 'B1G', 'SEC', 'PAC', 'CUSA', 'MAC', 'MWC', 'Ind', 'SBC', 'AAC']
-
-# Fetch and save teams from the CFBD API
-i = 0
-for conference in conferences:
-    api_instance = cfbd.TeamsApi(cfbd.ApiClient(cfbd_configuration))
-    
-    try:
-        api_response = api_instance.get_teams(conference=conference)
-        for team_data in api_response:
-            team = []
-            team = [team_data.abbreviation,
-                        team_data.alt_color,
-                        team_data.classification,
-                        team_data.color,
-                        team_data.conference,
-                        team_data.location.city,
-                        team_data.mascot,
-                        team_data.school,
-                        team_data.logos,
-                        team_data.twitter]
-            i+=1
-            
-    except ApiException as e:
-        print("Exception when calling TeamsApi->teams_conference: %s\n" % e)
-print(i)
+games_api_instance = cfbd.GamesApi(cfbd.ApiClient(configuration))
+# lines_api_instance = cfbd.BettingApi(cfbd.ApiClient(configuration))
+year = 2023
+week = 1
+maxHeap = []
+# team_fpi = fetch_fpi()
+try:
+    games_api_response = games_api_instance.get_games(year, week=week)
+    print("Length of games", len(games_api_response))
+    id = 0
+    for game_data in games_api_response:
+        game_time_string = game_data.start_date
+        game_time = datetime.strptime(game_time_string, "%Y-%m-%dT%H:%M:%S.%fZ")
+        lock_time = game_time - timedelta(hours=5)
+        break
+except: pass
