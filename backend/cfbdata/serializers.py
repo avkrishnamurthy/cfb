@@ -36,6 +36,6 @@ class GameSerializer(serializers.ModelSerializer):
     away_team = TeamSerializer(read_only=True)
     class Meta:
         model = Game
-        fields = ['game_id', 'year', 'week', 'home',
+        fields = ['id', 'game_id', 'year', 'week', 'home',
                   'away', 'home_team', 'away_team',
-                  'line', 'home_points', 'away_points']
+                  'line', 'home_points', 'away_points', 'lock_time', 'locked']

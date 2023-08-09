@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics
 from api.mixins import UserQuerySetMixin
-from .serializers import PlayerSerializer, FavoriteTeamSerializer, TeamSerializer
-from .models import FavoriteTeam, Team
+from .serializers import PlayerSerializer, FavoriteTeamSerializer, TeamSerializer, GameSerializer
+from .models import FavoriteTeam, Team, Game
 import cfbd
 from cfbd.rest import ApiException
 import os
@@ -37,6 +37,11 @@ class ListPlayersAPIView(APIView):
         except ApiException as e:
             return JsonResponse({'error': str(e)}, status=500) 
         
+
+class GamesListAPIView(generics.ListAPIView):
+    queryset= Game.objects.all()
+    serializer_class = GameSerializer
+    
 class FavoriteTeamCreateAPIView(generics.CreateAPIView):
     queryset = FavoriteTeam.objects.all()
     serializer_class = FavoriteTeamSerializer

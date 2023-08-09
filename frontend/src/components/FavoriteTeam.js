@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 const FavoriteTeam = ({user_id}) => {
   const [favoriteTeam, setFavoriteTeam] = useState([]);
-  const [a, setA] = useState([]);
   const accessToken = localStorage.getItem("access");
   useEffect(() => {
     // Fetch data from the API after the component mounts
