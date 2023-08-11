@@ -12,6 +12,7 @@ import SearchPlayer from "./pages/SearchPlayerPage"
 import SearchTeam from "./pages/SearchTeamPage"
 import Profile from "./pages/ProfilePage"
 import Games from "./pages/GamesPage"
+import Leaderboard from "./pages/LeaderboardPage"
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/search-team" element={<SearchTeam/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/games" element={<Games/>}/>
+          <Route path="/leaderboard" element={<Leaderboard />}/>
           <Route path="*" element={<NoPage/>}/>
         </Routes>
 

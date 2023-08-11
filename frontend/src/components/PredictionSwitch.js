@@ -4,6 +4,7 @@ const PredictionSwitch = (props) => {
     const prediction = props.prediction
     const type = props.type
     const game = props.game
+    console.log(game.locked)
     const [selectedSide, setSelectedSide] = useState(null);
     const accessToken = localStorage.getItem('access')
     // const [firstClick, setFirstClick] = useState(false)
@@ -25,6 +26,13 @@ const PredictionSwitch = (props) => {
               body: body,
           });
           const data = await response.json();
+
+          if (response.status === 200) {
+            alert("Prediction updated")
+          } else {
+            // Failed to add team to favorites
+            alert("Failed to update prediction.");
+          }
           // console.log(data)
           //setA(data['team']['id'])
         } catch (error) {

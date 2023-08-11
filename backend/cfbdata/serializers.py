@@ -47,3 +47,7 @@ class PredictionSerializer(serializers.ModelSerializer):
         model=Prediction
         fields = ['id', 'user', 'home_winner', 'home_cover', 'game',
                   'year', 'week', 'score']
+        
+class LeaderboardSerializer(serializers.Serializer):
+    username = serializers.CharField(source='user__username')
+    total_score = serializers.IntegerField()

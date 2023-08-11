@@ -3,10 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics
 from api.mixins import UserQuerySetMixin
-from .serializers import PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer
+from .serializers import PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
 from .models import FavoriteTeam, Prediction, Team, Game
 import cfbd
 from cfbd.rest import ApiException
+from django.db.models import Sum
 import os
 from dotenv import load_dotenv
 
@@ -20,18 +21,16 @@ class ListTeamsAPIView(generics.ListAPIView):
 class ListPlayersAPIView(APIView):
     #permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
-        print("here")
         search_term = request.GET.get('search_term', '')
-        print(request)
         configuration = cfbd.Configuration()
         CFBD_API_KEY = os.getenv('CFBD_API_KEY')
         configuration.api_key['Authorization'] = CFBD_API_KEY
         configuration.api_key_prefix['Authorization'] = 'Bearer'
         
-        api_instance = cfbd.PlayersApi(cfbd.ApiClient(configuration))
+        general_api_instance = cfbd.PlayersApi(cfbd.ApiClient(configuration))
         
         try:
-            api_response = api_instance.player_search(search_term=search_term)
+            api_response = general_api_instance.player_search(search_term=search_term)
             results = PlayerSerializer(api_response, many=True).data
             return Response(results)
         except ApiException as e:
@@ -62,19 +61,33 @@ class PredictionUpdateAPIView(generics.UpdateAPIView):
     queryset = Prediction.objects.all()
     serializer_class = PredictionSerializer
 
-class PredictionListAPIView(UserQuerySetMixin, generics.ListAPIView):
+class PredictionListAPIView(generics.ListAPIView):
     queryset = Prediction.objects.all()
     serializer_class = PredictionSerializer
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-
         request = self.request
-        this_week = request.GET.get('week', '')
+        user_id = request.GET.get('user', None)
+        this_week = request.GET.get('week', None)
         if this_week: 
-            print(qs.order_by('-id')[:5])
+            qs = qs.filter(week=this_week)
+        if user_id:
+            qs = qs.filter(user=user_id)
             return qs.order_by('-id')[:5]
         return qs
+
+class LeaderboardListAPIView(APIView):
+    def get(self, request):
+        # Calculate scores and aggregate data
+        predictions = Prediction.objects.select_related('user').all()
+        user_scores = predictions.values('user__username').annotate(total_score=Sum('score'))
+        sorted_users = sorted(user_scores, key=lambda user: user['total_score'], reverse=True)
+        print(sorted_users)
+        # Serialize the leaderboard data
+        serializer = LeaderboardSerializer(sorted_users, many=True)
+        return Response(serializer.data)
+
 
 class FavoriteTeamCreateAPIView(generics.CreateAPIView):
     queryset = FavoriteTeam.objects.all()

@@ -43,7 +43,7 @@ class Prediction(models.Model):
     home_cover = models.BooleanField(null=True, blank=True)
     year = models.IntegerField()
     week = models.IntegerField()   
-    score = models.IntegerField(null=True, blank=True)
+    score = models.IntegerField(default=0)
 
 
     

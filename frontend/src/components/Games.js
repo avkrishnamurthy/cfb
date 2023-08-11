@@ -6,6 +6,8 @@ const Games = () => {
   const [games, setGames] = useState([]);
   const [predictions, setPredictions] = useState([]);
   const accessToken = localStorage.getItem("access");
+  const week = 1
+  const user_id = localStorage.getItem('user_id')
 
 const getPrediction = (gameId) => {
     return predictions.find((prediction) => prediction['game'].game_id === gameId) || null;
@@ -15,7 +17,7 @@ useEffect(() => {
     // Fetch user's predictions for the current week
     const fetchPredictions = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/cfbd/predictions/?week=current", {
+        const response = await fetch(`http://localhost:8000/api/cfbd/predictions/?week=${week}&user=${user_id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${accessToken}`,
