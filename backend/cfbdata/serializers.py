@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Team, FavoriteTeam, Game
+from .models import Prediction, Team, FavoriteTeam, Game
 from api.serializers import UserPublicSerializer
 
 class PlayerSerializer(serializers.Serializer):
@@ -39,3 +39,11 @@ class GameSerializer(serializers.ModelSerializer):
         fields = ['id', 'game_id', 'year', 'week', 'home',
                   'away', 'home_team', 'away_team',
                   'line', 'home_points', 'away_points', 'lock_time', 'locked']
+        
+class PredictionSerializer(serializers.ModelSerializer):
+    game = GameSerializer(read_only=True)
+    user = UserPublicSerializer(read_only=True)
+    class Meta:
+        model=Prediction
+        fields = ['id', 'user', 'home_winner', 'home_cover', 'game',
+                  'year', 'week', 'score']

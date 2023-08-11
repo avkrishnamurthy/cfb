@@ -28,4 +28,4 @@ try:
         game_time = datetime.strptime(game_time_string, "%Y-%m-%dT%H:%M:%S.%fZ")
         lock_time = game_time - timedelta(hours=5)
         break
-except: pass
+except: print("BAD")

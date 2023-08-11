@@ -1,4 +1,72 @@
-img {
-    width: 60px;
-    height: 60px;
-}
+.game-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 300px;
+  }
+  
+  .game-button {
+    display: flex;
+    flex-direction: column; /* Change flex direction to column */
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .team-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .team-details {
+    display: flex;
+    flex-direction: column; /* Change flex direction to column */
+    align-items: center;
+    margin: 0 10px;
+  }
+  
+  .team-details h3 {
+    margin: 0;
+    margin-top: 5px; /* Add margin to the top of team names */
+  }
+  
+  .team-details img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .game-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end
+  }
+
+  .toggle-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .toggle-button {
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 5px;
+  }
+  
+  .toggle-button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* Rest of your CSS styles... */
+  

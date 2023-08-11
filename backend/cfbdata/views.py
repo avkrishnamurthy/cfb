@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics
 from api.mixins import UserQuerySetMixin
-from .serializers import PlayerSerializer, FavoriteTeamSerializer, TeamSerializer, GameSerializer
-from .models import FavoriteTeam, Team, Game
+from .serializers import PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer
+from .models import FavoriteTeam, Prediction, Team, Game
 import cfbd
 from cfbd.rest import ApiException
 import os
@@ -41,13 +41,46 @@ class ListPlayersAPIView(APIView):
 class GamesListAPIView(generics.ListAPIView):
     queryset= Game.objects.all()
     serializer_class = GameSerializer
-    
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+
+        request = self.request
+        this_week = request.GET.get('week', '')
+        if this_week: return qs.order_by('-id')[:5]
+        return qs
+
+
+class PredictionCreateAPIView(generics.CreateAPIView):
+    queryset = Prediction.objects.all()
+    serializer_class = PredictionSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user, game_id=self.request.data['game_id'])
+
+class PredictionUpdateAPIView(generics.UpdateAPIView):
+    queryset = Prediction.objects.all()
+    serializer_class = PredictionSerializer
+
+class PredictionListAPIView(UserQuerySetMixin, generics.ListAPIView):
+    queryset = Prediction.objects.all()
+    serializer_class = PredictionSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+
+        request = self.request
+        this_week = request.GET.get('week', '')
+        if this_week: 
+            print(qs.order_by('-id')[:5])
+            return qs.order_by('-id')[:5]
+        return qs
+
 class FavoriteTeamCreateAPIView(generics.CreateAPIView):
     queryset = FavoriteTeam.objects.all()
     serializer_class = FavoriteTeamSerializer
 
     def perform_create(self, serializer):
-        print(self.request.data)
         serializer.save(user=self.request.user, team_id=self.request.data['team_id'])
 
 class FavoriteTeamDetailAPIView(UserQuerySetMixin, generics.RetrieveAPIView):

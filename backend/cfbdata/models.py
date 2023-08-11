@@ -39,8 +39,10 @@ class Game(models.Model):
 class Prediction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    home_points_prediction = models.IntegerField()
-    away_points_prediction = models.IntegerField()
+    home_winner = models.BooleanField()
+    home_cover = models.BooleanField()
+    year = models.IntegerField()
+    week = models.IntegerField()   
     score = models.IntegerField(null=True, blank=True)
 
 
