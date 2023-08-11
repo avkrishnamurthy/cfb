@@ -1,0 +1,17 @@
+.toggle-button {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .side {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .side.selected {
+    background-color: blue;
+    color: white;
+  }

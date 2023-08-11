@@ -5,7 +5,6 @@ export default function SearchTeamPage() {
     return (
         <>
             <SearchTeam/>
-            <h2>Search Team Page</h2>
         </>
     )
 }

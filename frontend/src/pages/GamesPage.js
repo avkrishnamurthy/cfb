@@ -4,7 +4,6 @@ export default function GamesPage() {
     return (
         <>
             <Games/>
-            <h2>Games Page</h2>
         </>
     )
 }

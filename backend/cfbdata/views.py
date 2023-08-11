@@ -83,20 +83,26 @@ class FavoriteTeamCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, team_id=self.request.data['team_id'])
 
+
+class FavoriteTeamUpdateAPIView(UserQuerySetMixin, generics.UpdateAPIView):
+    queryset = FavoriteTeam.objects.all()
+    serializer_class = FavoriteTeamSerializer
+    lookup_field = 'user_id'
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user, team_id=self.request.data['team_id'])
+
+
 class FavoriteTeamDetailAPIView(UserQuerySetMixin, generics.RetrieveAPIView):
     queryset = FavoriteTeam.objects.all()
     serializer_class = FavoriteTeamSerializer
+    lookup_field = 'user_id'
 
-    def get_object(self):
-        user_id = self.kwargs.get('user_id')
-        queryset = self.get_queryset()
-        obj = generics.get_object_or_404(queryset, user_id=user_id)
-        self.check_object_permissions(self.request, obj)
-        return obj
-
-# class GamesListAPIView(generics.ListAPIView):
-
-
-# class WeeklyPicksCreateAPIView(generics.CreateAPIView):
+    # def get_object(self):
+    #     user_id = self.kwargs.get('user_id')
+    #     queryset = self.get_queryset()
+    #     obj = generics.get_object_or_404(queryset, user_id=user_id)
+    #     self.check_object_permissions(self.request, obj)
+    #     return obj
 
 

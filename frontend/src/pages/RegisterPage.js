@@ -12,7 +12,6 @@ export default function RegisterPage() {
     return (
         <>
             <Register/>
-            <h2>Create Account Page</h2>
         </>
     )
 }

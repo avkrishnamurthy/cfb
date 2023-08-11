@@ -5,7 +5,6 @@ export default function ProfilePage() {
     return (
         <>
             <Profile/>
-            <h2>Profile Page</h2>
         </>
     )
 }
