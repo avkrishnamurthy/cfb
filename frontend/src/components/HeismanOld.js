@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar';
-import SearchResultList from './SearchResultList';
+
 const Heisman = () => {
     const [rankingSpot, setRankingSpot] = useState('');
     const [playerName, setPlayerName] = useState('');
     const [heismanFinalists, setHeismanFinalists] = useState({})
     const accessToken = localStorage.getItem('access')
-    const user_id = localStorage.getItem("user_id")
     const [updateHeismans, SetUpdateHeismans] = useState(false)
-    const [playerSearchResults, setPlayerSearchResults] = useState([])
+
+    const handleSearch = async () => {
+        try {
+          const response = await fetch(`http://localhost:8000/api/cfbd/?search_term=${searchTerm}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
+            },
+          });
+          const data = await response.json();
+          if (response.status === 200) {
+            setPlayers(data);
+          }
+          else {
+            setPlayers(["Unauthenticated"]);
+          }
+          
+        } catch (error) {
+          console.error("Error fetching player data: ", error);
+        }
+      };
       
     useEffect(() => {
         const fetchHeismanFinalists = async (event) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/cfbd/heisman-finalists/?user=${user_id}`, {
+            const response = await fetch("http://localhost:8000/api/cfbd/heisman-finalists/", {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -57,7 +74,7 @@ const Heisman = () => {
 
     return (
         <div>
-        {/* <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <label htmlFor="ranking-spot">Ranking Spot:</label>
             <input
                 type="number"
@@ -77,18 +94,17 @@ const Heisman = () => {
                 required
             />
             <button type="submit">Submit</button>
-        </form> */}
+        </form>
 
-        <div className="search-bar-container">
-            <SearchBar setPlayerSearchResults={setPlayerSearchResults}/> 
-            <SearchResultList playerSearchResults={playerSearchResults} updateHeismans={updateHeismans} SetUpdateHeismans={SetUpdateHeismans}/>
-        </div>
         <div>
             <h2> Heisman Finalists</h2>
             {heismanFinalists ? (
             <div>
                 <ol>
+                    <div>
                     <li>{heismanFinalists.player_1}</li>
+
+                    </div>
                     <li>{heismanFinalists.player_2}</li>
                     <li>{heismanFinalists.player_3}</li>
                     <li>{heismanFinalists.player_4}</li>
@@ -96,15 +112,7 @@ const Heisman = () => {
                 </ol>
             </div>
             ) : (
-                <div>
-                <ol>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ol>
-            </div>
+            <p>Loading...</p>
             )}
         </div>
     </div>

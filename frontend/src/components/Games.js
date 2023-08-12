@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import './Games.css'
-import Switch from '@mui/material/Switch'
 import PredictionSwitch from "./PredictionSwitch";
 const Games = () => {
   const [games, setGames] = useState([]);
@@ -84,8 +83,8 @@ useEffect(() => {
                 <p>{game.line}</p>
                 <p>{game.game_id}</p>
                     <div>
-                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game}/>
-                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game}/>
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} />
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} />
                 </div>
                 <div className='toggle-buttons'>
     </div>

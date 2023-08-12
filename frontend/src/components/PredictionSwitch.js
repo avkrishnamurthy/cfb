@@ -4,7 +4,6 @@ const PredictionSwitch = (props) => {
     const prediction = props.prediction
     const type = props.type
     const game = props.game
-    console.log(game.locked)
     const [selectedSide, setSelectedSide] = useState(null);
     const accessToken = localStorage.getItem('access')
     // const [firstClick, setFirstClick] = useState(false)
@@ -27,7 +26,7 @@ const PredictionSwitch = (props) => {
           });
           const data = await response.json();
 
-          if (response.status === 200) {
+          if (response.status === 200 || response.status === 201) {
             alert("Prediction updated")
           } else {
             // Failed to add team to favorites
@@ -65,8 +64,10 @@ const PredictionSwitch = (props) => {
               body: body
             });
       
-            if (response.status === 201) {
+            if (response.status === 200 || response.status === 201) {
               // Team added to favorites successfully
+              alert("Prediction submitted");
+              window.location.reload()
             } else {
               // Failed to add team to favorites
               alert("Failed to submit prediction.");
@@ -80,8 +81,6 @@ const PredictionSwitch = (props) => {
     const handleFirstClick = (side) => {
         setSelectedSide(side === selectedSide ? null : side);
         createPrediction(side)
-        alert("Prediction submitted");
-        window.location.reload()
     }
 useEffect(() => {
     if (prediction) {

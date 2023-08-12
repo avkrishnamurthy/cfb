@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import './UserSearch.css'
+import { useNavigate } from "react-router-dom";
 const UserSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const accessToken = localStorage.getItem("access");
-
+  const navigate = useNavigate();
   const handleSearch = async () => {
     try {
       const response = await fetch(`http://localhost:8000/api/users/search/?username=${searchTerm}`, {
@@ -24,6 +25,11 @@ const UserSearch = () => {
     setShowDropdown((prevShow) => !prevShow);
   };
 
+  const visitProfile = (user_id) => {
+    navigate(`/profile/${user_id}/`)
+    window.location.reload()
+  }
+
   return (
     <div className="dropdown">
       <button className="dropbtn" onClick={toggleDropdown}>
@@ -36,7 +42,7 @@ const UserSearch = () => {
           {searchResults.map((user) => (
             <div key={user.id}>
               <p>Username: {user.username}</p>
-              {/* Display other user information */}
+              <button type="button" onClick={() => visitProfile(user.id)}> Visit Profile </button>
             </div>
           ))}
         </div>

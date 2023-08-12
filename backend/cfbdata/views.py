@@ -30,8 +30,8 @@ class ListPlayersAPIView(APIView):
         general_api_instance = cfbd.PlayersApi(cfbd.ApiClient(configuration))
         
         try:
-            api_response = general_api_instance.player_search(search_term=search_term)
-            results = PlayerSerializer(api_response, many=True).data
+            general_api_response = general_api_instance.player_search(search_term=search_term)
+            results = PlayerSerializer(general_api_response, many=True).data
             return Response(results)
         except ApiException as e:
             return JsonResponse({'error': str(e)}, status=500) 
@@ -149,4 +149,5 @@ class HeismanFinalistCreateUpdateAPIView(generics.CreateAPIView, generics.Update
     def perform_create(self, serializer, player_ranking):
         kw = {'user': self.request.user,
               f'player_{player_ranking}': self.request.data.get('player_name')}
+        print(kw)
         serializer.save(**kw)

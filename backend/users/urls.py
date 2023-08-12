@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>/', views.UserDetailAPIView.as_view(), name="user_detail"),
     path('<int:pk>/update/', views.UserUpdateAPIView.as_view(), name="user_update"),
     path('search/', views.UserSearchAPIView.as_view(), name='user-search'),
+    path('profile/<int:user_id>/', views.UserProfileView.as_view(), name='user_profile')
 ]

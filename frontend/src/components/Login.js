@@ -43,6 +43,7 @@ const Login = ({onLogin}) => {
         onLogin();
         fetchID();
         navigate(`/product-list/${username}`)
+        // window.location.reload();
         return
       }
       alert("Invalid credentials")
