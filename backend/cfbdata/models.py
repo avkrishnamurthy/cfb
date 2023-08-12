@@ -46,4 +46,13 @@ class Prediction(models.Model):
     score = models.IntegerField(default=0)
 
 
+class HeismanFinalists(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    player_1 = models.CharField(null=True, blank=True, max_length=100)
+    player_2 = models.CharField(null=True, blank=True, max_length=100)
+    player_3 = models.CharField(null=True, blank=True, max_length=100)
+    player_4 = models.CharField(null=True, blank=True, max_length=100)
+    player_5 = models.CharField(null=True, blank=True, max_length=100)
+
+
     

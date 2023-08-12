@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Prediction, Team, FavoriteTeam, Game
+from .models import HeismanFinalists, Prediction, Team, FavoriteTeam, Game
 from api.serializers import UserPublicSerializer
 
 class PlayerSerializer(serializers.Serializer):
@@ -51,3 +51,9 @@ class PredictionSerializer(serializers.ModelSerializer):
 class LeaderboardSerializer(serializers.Serializer):
     username = serializers.CharField(source='user__username')
     total_score = serializers.IntegerField()
+
+class HeismanFinalistsSerializer(serializers.ModelSerializer):
+    user = UserPublicSerializer(read_only=True)
+    class Meta:
+        model = HeismanFinalists
+        fields = ['user', 'player_1', 'player_2', 'player_3', 'player_4', 'player_5']

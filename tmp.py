@@ -13,11 +13,11 @@ CFBD_API_KEY = os.getenv('CFBD_API_KEY')
 configuration.api_key['Authorization'] = CFBD_API_KEY
 configuration.api_key_prefix['Authorization'] = 'Bearer'
 
-games_api_instance = cfbd.PlayersApi(cfbd.ApiClient(configuration))
+players_api_instance = cfbd.PlayersApi(cfbd.ApiClient(configuration))
 # lines_api_instance = cfbd.BettingApi(cfbd.ApiClient(configuration))
 year = 2022
 try:
-    games_api_response = games_api_instance.get_player_season_stats(year, playerId=4566154)
+    games_api_response = players_api_instance.get_player_usage(year, player_id=4432577)
     print("Length of games", len(games_api_response))
     id = 0
     for game_data in games_api_response:

@@ -13,6 +13,7 @@ import SearchTeam from "./pages/SearchTeamPage"
 import Profile from "./pages/ProfilePage"
 import Games from "./pages/GamesPage"
 import Leaderboard from "./pages/LeaderboardPage"
+import Heisman from "./pages/HeismanPage"
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/games" element={<Games/>}/>
           <Route path="/leaderboard" element={<Leaderboard />}/>
+          <Route path="/heisman" element={<Heisman />}/>
           <Route path="*" element={<NoPage/>}/>
         </Routes>
 

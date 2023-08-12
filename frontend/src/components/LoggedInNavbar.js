@@ -17,6 +17,7 @@ const LoggedInNavbar = ({onLogout}) => {
         <Link to="/profile"> Profile </Link>
         <Link to="/games"> Games </Link>
         <Link to="/leaderboard"> Leaderboard </Link>
+        <Link to="/heisman"> Heisman </Link>
         <UserSearch/>
         <button type="button" id="logout-button" onClick={() => logout()}> Logout </button>
     </nav>

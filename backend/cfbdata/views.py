@@ -1,10 +1,10 @@
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import authentication, permissions, generics
+from rest_framework import authentication, permissions, generics, status
 from api.mixins import UserQuerySetMixin
-from .serializers import PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
-from .models import FavoriteTeam, Prediction, Team, Game
+from .serializers import HeismanFinalistsSerializer, PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
+from .models import FavoriteTeam, HeismanFinalists, Prediction, Team, Game
 import cfbd
 from cfbd.rest import ApiException
 from django.db.models import Sum
@@ -118,4 +118,35 @@ class FavoriteTeamDetailAPIView(UserQuerySetMixin, generics.RetrieveAPIView):
     #     self.check_object_permissions(self.request, obj)
     #     return obj
 
+class HeismanFinalistListAPIView(generics.ListAPIView):
+    queryset = HeismanFinalists.objects.all()
+    serializer_class = HeismanFinalistsSerializer
 
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        request = self.request
+        user_id = request.GET.get('user', None)
+        if user_id: 
+            qs = qs.filter(user=user_id)
+        return qs
+    
+class HeismanFinalistCreateUpdateAPIView(generics.CreateAPIView, generics.UpdateAPIView):
+    queryset = HeismanFinalists.objects.all()
+    serializer_class = HeismanFinalistsSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        return HeismanFinalists.objects.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        obj = self.get_queryset(self, *args, **kwargs).first()
+        ranking_spot = int(kwargs['pk'])
+        serializer = HeismanFinalistsSerializer(obj, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer, ranking_spot)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def perform_create(self, serializer, player_ranking):
+        kw = {'user': self.request.user,
+              f'player_{player_ranking}': self.request.data.get('player_name')}
+        serializer.save(**kw)
