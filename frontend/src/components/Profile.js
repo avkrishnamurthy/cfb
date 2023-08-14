@@ -145,13 +145,13 @@ const Profile = () => {
             <h2> Heisman Finalists</h2>
             {profileData.heisman_finalists ? (
             <div>
-                <ol>
+                {/* <ol>
                     <li>{profileData.heisman_finalists[0].player_1}</li>
                     <li>{profileData.heisman_finalists[0].player_2}</li>
                     <li>{profileData.heisman_finalists[0].player_3}</li>
                     <li>{profileData.heisman_finalists[0].player_4}</li>
                     <li>{profileData.heisman_finalists[0].player_5}</li>
-                </ol>
+                </ol> */}
             </div>
             ) : (
                 <div>

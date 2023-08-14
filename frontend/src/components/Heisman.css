@@ -8,7 +8,45 @@
     min-width: 200px;
 }
 
-.heisman-list img {
+/* .heisman-list img {
     height: 240px;
     width: 320px;
-}
+} */
+
+
+/* Styling for the card container */
+.heisman-cards {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  /* Styling for each individual card */
+  .heisman-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    width: calc(15% - 2px); /* Adjust the width as needed */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  /* Styling for player details within the card */
+  .player-details {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  /* Styling for images */
+  .heisman-player-img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+
+  .heisman-team-img {
+    max-width: 40%;
+    height: auto;
+    margin-top: 10px;
+  }
+  

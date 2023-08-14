@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import HeismanFinalists, Prediction, Team, FavoriteTeam, Game
+from .models import HeismanFinalists, PlayerImages, Prediction, Team, FavoriteTeam, Game
 from api.serializers import UserPublicSerializer
 
 class PlayerSerializer(serializers.Serializer):
@@ -57,3 +57,9 @@ class HeismanFinalistsSerializer(serializers.ModelSerializer):
     class Meta:
         model = HeismanFinalists
         fields = ['user', 'player_1', 'player_2', 'player_3', 'player_4', 'player_5']
+
+class PlayerImagesSerializer(serializers.ModelSerializer):
+    team = TeamSerializer(read_only=True)
+    class Meta:
+        model = PlayerImages
+        fields = ['position', 'img', 'team']

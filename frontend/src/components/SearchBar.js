@@ -21,7 +21,6 @@ const SearchBar = ({setPlayerSearchResults}) => {
           .then((json) => {
             if (value === queryRef.current) {
                 setPlayerSearchResults(json)
-                console.log(json, value)
             }
             
           })

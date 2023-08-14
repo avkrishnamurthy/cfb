@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics, status
 from api.mixins import UserQuerySetMixin
-from .serializers import HeismanFinalistsSerializer, PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
+from .serializers import HeismanFinalistsSerializer, PlayerImagesSerializer, PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
 from .models import FavoriteTeam, HeismanFinalists, PlayerImages, Prediction, Team, Game
 import cfbd
 from cfbd.rest import ApiException
@@ -16,6 +16,15 @@ load_dotenv()
 class ListTeamsAPIView(generics.ListAPIView):
     queryset=Team.objects.all()
     serializer_class = TeamSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+
+        request = self.request
+        team = request.GET.get('team', '')
+        if team: qs = qs.filter(school=team)
+        return qs
+
         
 
 class ListPlayersAPIView(APIView):
@@ -171,9 +180,10 @@ class HeismanFinalistCreateUpdateAPIView(generics.CreateAPIView, generics.Update
 
         player_name = request.data.get('player_name')
         player_image_url = request.data.get('player_img_url')
-        print(player_name, player_image_url)
+        team_id = request.data.get('team_id')
+        position = request.data.get('position')
         # Check if the player already exists in PlayerImages
-        player_image, created = PlayerImages.objects.get_or_create(player=player_name, defaults={'img': player_image_url})
+        player_image, created = PlayerImages.objects.get_or_create(player=player_name, defaults={'position': position, 'team_id': team_id, 'img': player_image_url})
 
         self.perform_create(serializer, ranking_spot)
         headers = self.get_success_headers(serializer.data)
@@ -182,7 +192,6 @@ class HeismanFinalistCreateUpdateAPIView(generics.CreateAPIView, generics.Update
     def perform_create(self, serializer, player_ranking):
         kw = {'user': self.request.user,
               f'player_{player_ranking}': self.request.data.get('player_name')}
-        print(kw)
         serializer.save(**kw)
 
 class PlayerImageView(APIView):
@@ -190,7 +199,9 @@ class PlayerImageView(APIView):
         player_name = self.kwargs.get('player_name')
         try:
             player_image = PlayerImages.objects.get(player=player_name)
-            data = {'img': player_image.img}
-            return Response(data, status=status.HTTP_200_OK)
+            data = {'position': player_image.position, 'img': player_image.img, 'team': player_image.team}
+            serializer = PlayerImagesSerializer(player_image, data=data)
+            serializer.is_valid(raise_exception=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except PlayerImages.DoesNotExist:
             return Response({'message': 'Player image not found'}, status=status.HTTP_404_NOT_FOUND)

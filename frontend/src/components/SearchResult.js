@@ -3,7 +3,6 @@ import "./SearchResult.css"
 const SearchResult = (props) => {
 
     const  {REACT_APP_GOOGLE_API_KEY, REACT_APP_CX} = process.env
-    console.log(REACT_APP_GOOGLE_API_KEY, REACT_APP_CX)
 
     const loadGoogleApi = () => {
         const script = document.createElement("script");
@@ -20,7 +19,6 @@ const SearchResult = (props) => {
     const SetUpdateHeismans = props.SetUpdateHeismans
     const [rankingSpot, setRankingSpot] = useState(null)
     const accessToken = localStorage.getItem('access')
-    const [playerImage, setPlayerImage] = useState("")
 
       const initGoogleClient = () => {
         /* eslint-disable */
@@ -45,7 +43,7 @@ const SearchResult = (props) => {
               searchType: "image",
             });
       
-            console.log("Response", response);
+            // console.log("Response", response);
             return response;
           } catch (err) {
             console.error("Execute error", err);
@@ -56,7 +54,23 @@ const SearchResult = (props) => {
         loadGoogleApi();
       }, []);
 
-    const handleSubmit = async (playerName, playerTeam) => {
+    const fetchTeam = async(playerTeam) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/cfbd/teams/?team=${playerTeam}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+            });
+            const data = await response.json()
+            return data
+
+        }
+        catch {
+            console.log("Failed to fetch team")
+        }
+    }
+
+    const handleSubmit = async (playerName, playerTeam, position) => {
         // event.preventDefault();
         let imageData = null
         let body = null;
@@ -74,7 +88,15 @@ const SearchResult = (props) => {
 
         if (!imageData || !imageData.img) {
             const img_resp = await executeGoogleSearch(playerName, playerTeam);
-            body = JSON.stringify({ player_name: playerName, player_img_url: img_resp.result.items[0].link})
+            const team_resp = await fetchTeam(playerTeam);
+            console.log(team_resp)
+            if (team_resp.results) {
+                body = JSON.stringify({ player_name: playerName, player_img_url: img_resp.result.items[0].link, team_id: team_resp.results[0].id, position: position})
+            }
+            else {
+                console.log("Error fetching team")
+            }
+            // body = JSON.stringify({ player_name: playerName, player_img_url: img_resp.result.items[0].link, team_id: team_resp.results.id})
         }
         else {
             body = JSON.stringify({player_name: playerName})
@@ -113,7 +135,7 @@ const SearchResult = (props) => {
                 onChange={(e) => setRankingSpot(e.target.value)}
                 required
             />
-            <button type="button" onClick={() => handleSubmit(result.name, result.team)}>Submit</button>
+            <button type="button" onClick={() => handleSubmit(result.name, result.team, result.position)}>Submit</button>
         </div>
   )
 }

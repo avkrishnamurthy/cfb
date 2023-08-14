@@ -56,7 +56,10 @@ class HeismanFinalists(models.Model):
 
 class PlayerImages(models.Model):
     player = models.CharField()
+    position = models.CharField()
     img = models.URLField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+
 
 
     
