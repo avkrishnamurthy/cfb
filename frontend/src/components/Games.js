@@ -86,8 +86,6 @@ useEffect(() => {
                 <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} />
                 <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} />
                 </div>
-                <div className='toggle-buttons'>
-    </div>
               </div>
             </div>
           </div>

@@ -59,11 +59,10 @@ class UserProfileView(APIView):
 
         heisman_finalists = HeismanFinalists.objects.filter(user=user)
         predictions = Prediction.objects.filter(user=user)
-        favorite_team = FavoriteTeam.objects.get(user=user)
-        print(predictions)
+        favorite_team = FavoriteTeam.objects.filter(user=user)
         heisman_finalists_data = HeismanFinalistsSerializer(heisman_finalists, many=True).data
         predictions_data = PredictionSerializer(predictions, many=True).data
-        favorite_team_data = FavoriteTeamSerializer(favorite_team).data
+        favorite_team_data = FavoriteTeamSerializer(favorite_team, many=True).data
 
         profile_data = {
             'user_id': user.id,

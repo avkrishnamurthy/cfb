@@ -19,7 +19,6 @@ const SearchTeam = () => {
         });
         const data = await response.json();
         setFavoriteTeam(data['team']); // Update the state with the fetched product data
-        //setA(data['team']['id'])
       } catch (error) {
         console.error("Error fetching favorite team: ", error);
       }

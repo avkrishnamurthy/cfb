@@ -18,7 +18,7 @@ class Team(models.Model):
     twitter = models.CharField(null=True)
 
 class FavoriteTeam(models.Model):
-    user = models.ForeignKey(User, default=1, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
 
 
@@ -33,7 +33,7 @@ class Game(models.Model):
     line = models.CharField(null=True, blank=True)
     home_points = models.IntegerField(null=True, blank=True)
     away_points = models.IntegerField(null=True, blank=True)
-    lock_time = models.DateTimeField()  # Store the calculated lock time here
+    lock_time = models.DateTimeField()
     locked = models.BooleanField(default=False)
 
 class Prediction(models.Model):
@@ -53,6 +53,10 @@ class HeismanFinalists(models.Model):
     player_3 = models.CharField(null=True, blank=True, max_length=100)
     player_4 = models.CharField(null=True, blank=True, max_length=100)
     player_5 = models.CharField(null=True, blank=True, max_length=100)
+
+class PlayerImages(models.Model):
+    player = models.CharField()
+    img = models.URLField()
 
 
     

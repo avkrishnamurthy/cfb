@@ -17,7 +17,7 @@ const SearchResultList = (props) => {
           ))}
         </div>
       ) : (
-        <p>Loading...</p>
+        <div></div>
       )}
       </div>
   )

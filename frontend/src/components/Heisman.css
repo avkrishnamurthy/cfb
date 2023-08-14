@@ -1,9 +1,14 @@
 .search-bar-container {
-    padding-top: 20vh;
+    padding-top: 2vh;
     width: 40%;
     margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-width: 200px;
+}
+
+.heisman-list img {
+    height: 240px;
+    width: 320px;
 }

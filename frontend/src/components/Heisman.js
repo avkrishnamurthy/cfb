@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import SearchResultList from './SearchResultList';
+import "./Heisman.css"
 const Heisman = () => {
-    const [rankingSpot, setRankingSpot] = useState('');
-    const [playerName, setPlayerName] = useState('');
+
     const [heismanFinalists, setHeismanFinalists] = useState({})
     const accessToken = localStorage.getItem('access')
     const user_id = localStorage.getItem("user_id")
     const [updateHeismans, SetUpdateHeismans] = useState(false)
     const [playerSearchResults, setPlayerSearchResults] = useState([])
+    const [playerImages, setPlayerImages] = useState({});
       
-    useEffect(() => {
-        const fetchHeismanFinalists = async (event) => {
+    const fetchHeismanFinalists = async (event) => {
         try {
             const response = await fetch(`http://localhost:8000/api/cfbd/heisman-finalists/?user=${user_id}`, {
             method: "GET",
@@ -25,60 +25,51 @@ const Heisman = () => {
             
             }
             
-           catch (error) {
+        catch (error) {
             console.error("Error fetching heisman finalists: ", error);
-          }
+        }
     }
-    fetchHeismanFinalists();
+
+    const fetchPlayerImages = async () => {
+        const playerNames = Object.values(heismanFinalists);
+        const imageMap = {}; // Temporary map to store image data
+        console.log(playerNames)
+        for (const playerName of playerNames) {
+            try {
+                const imageResponse = await fetch(`http://localhost:8000/api/cfbd/player-image/${playerName}/`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                const imageData = await imageResponse.json();
+                console.log(`Image data for ${playerName}:`, imageData);
+
+                // Store the image data in the temporary map
+                imageMap[playerName] = imageData.img;
+            } catch (error) {
+                console.log(`Error fetching image for ${playerName}:`, error);
+            }
+        }
+
+        // Update the state with the stored image data
+        console.log("Image map", (imageMap))
+        setPlayerImages(imageMap);
+    }
+    
+    useEffect(() => {
+        fetchHeismanFinalists();
+        // fetchPlayerImages();
+
     }, [updateHeismans]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const url = `http://localhost:8000/api/cfbd/heisman-finalists/${rankingSpot}/`;
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
-
-                // Add your authentication headers here
-            },
-            body: JSON.stringify({ player_name: playerName})
-        });
-
-        if (response.status === 200 || response.status === 201) {
-            alert('Player added successfully');
-            SetUpdateHeismans(!updateHeismans)
-        } else {
-            alert('Failed to add player');
-        }
-    };
+    useEffect(() => {
+        // After the playerImages state has been updated,
+        // the images should be displayed immediately.
+        fetchPlayerImages();
+    }, [heismanFinalists]); // Add playerImages as a dependency
 
     return (
         <div>
-        {/* <form onSubmit={handleSubmit}>
-            <label htmlFor="ranking-spot">Ranking Spot:</label>
-            <input
-                type="number"
-                id="ranking-spot"
-                min="1"
-                max="5"
-                value={rankingSpot}
-                onChange={(e) => setRankingSpot(e.target.value)}
-                required
-            />
-            <label htmlFor="player-name">Player Name:</label>
-            <input
-                type="text"
-                id="player-name"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                required
-            />
-            <button type="submit">Submit</button>
-        </form> */}
-
         <div className="search-bar-container">
             <SearchBar setPlayerSearchResults={setPlayerSearchResults}/> 
             <SearchResultList playerSearchResults={playerSearchResults} updateHeismans={updateHeismans} SetUpdateHeismans={SetUpdateHeismans}/>
@@ -87,12 +78,17 @@ const Heisman = () => {
             <h2> Heisman Finalists</h2>
             {heismanFinalists ? (
             <div>
-                <ol>
+                <ol className="heisman-list">
                     <li>{heismanFinalists.player_1}</li>
+                    <img src={playerImages[heismanFinalists.player_1]}></img>
                     <li>{heismanFinalists.player_2}</li>
+                    <img src={playerImages[heismanFinalists.player_2]}></img>
                     <li>{heismanFinalists.player_3}</li>
+                    <img src={playerImages[heismanFinalists.player_3]}></img>
                     <li>{heismanFinalists.player_4}</li>
+                    <img src={playerImages[heismanFinalists.player_4]}></img>
                     <li>{heismanFinalists.player_5}</li>
+                    <img src={playerImages[heismanFinalists.player_5]}></img>
                 </ol>
             </div>
             ) : (

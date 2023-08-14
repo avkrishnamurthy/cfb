@@ -40,6 +40,10 @@ const PredictionSwitch = (props) => {
       };
 
     const handleSideClick = (side) => {
+        if (game.locked) {
+            alert("Game is locked")
+            return
+        }
         if (side===selectedSide) return
         setSelectedSide(side === selectedSide ? null : side);
         updatePrediction(side, prediction.id)
@@ -79,6 +83,10 @@ const PredictionSwitch = (props) => {
     }
 
     const handleFirstClick = (side) => {
+        if (game.locked) {
+            alert("Game is locked")
+            return
+        }
         setSelectedSide(side === selectedSide ? null : side);
         createPrediction(side)
     }

@@ -32,21 +32,20 @@ const Login = ({onLogin}) => {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      console.log(response)
       const { access, refresh } = data;
       // Store tokens in localStorage
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
       if (response.status == 200) {
         localStorage.setItem("loggedIn", true)
-        // localStorage.setItem()
         onLogin();
-        fetchID();
-        navigate(`/product-list/${username}`)
-        // window.location.reload();
-        return
+        fetchID().then(() => {
+            navigate(`/profile/${localStorage.getItem('user_id')}`)
+        })
       }
-      alert("Invalid credentials")
+      else {
+        alert("Invalid credentials")
+      }
       // Set authentication state to true (user is logged in)
       // You can implement this using context or Redux
       // setAuthenticated(true);

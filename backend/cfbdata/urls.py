@@ -14,9 +14,6 @@ urlpatterns = [
     path('predictions/', views.PredictionListAPIView.as_view(), name='view_predictions'),
     path('leaderboard/', views.LeaderboardListAPIView.as_view(), name='view_leaderboard'),
     path('heisman-finalists/<int:pk>/', views.HeismanFinalistCreateUpdateAPIView.as_view(), name='create_heisman'),
-    path('heisman-finalists/', views.HeismanFinalistListAPIView.as_view(), name='view_heisman')
-    # path('games/', views.)
-    # path('<int:pk>/', views.ProductDetailAPIView.as_view(), name="product-detail"),
-    # path('<int:pk>/update/', views.ProductUpdateAPIView.as_view(), name="product-edit"),
-    # path('<int:pk>/delete/', views.ProductDestroyAPIView.as_view(), name="product-delete"),
+    path('heisman-finalists/', views.HeismanFinalistListAPIView.as_view(), name='view_heisman'),
+    path('player-image/<str:player_name>/', views.PlayerImageView.as_view(), name='player_image_view'),
 ]

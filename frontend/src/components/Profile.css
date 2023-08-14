@@ -1,18 +1,14 @@
-.toggle-button {
-    display: flex;
-    justify-content: center;
-    cursor: default;
-  }
-  
-  .side {
+.gs {
     padding: 10px 20px;
     font-size: 16px;
     border: 1px solid #ccc;
     background-color: #fff;
-    cursor: pointer;
+    cursor: default;
   }
   
-  .side.selected {
+  .gs.selected {
     background-color: blue;
     color: white;
+    cursor: default;
   }
+

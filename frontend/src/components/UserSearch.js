@@ -26,7 +26,7 @@ const UserSearch = () => {
   };
 
   const visitProfile = (user_id) => {
-    navigate(`/profile/${user_id}/`)
+    navigate(`/profile/${user_id}`)
     window.location.reload()
   }
 
