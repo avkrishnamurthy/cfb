@@ -117,7 +117,7 @@ class LeaderboardListAPIView(APIView):
     def get(self, request):
         # Calculate scores and aggregate data
         predictions = Prediction.objects.select_related('user').all()
-        user_scores = predictions.values('user__username').annotate(total_score=Sum('score'))
+        user_scores = predictions.values('user__username', 'user__id').annotate(total_score=Sum('score'))
         sorted_users = sorted(user_scores, key=lambda user: user['total_score'], reverse=True)[0:10]
         # Serialize the leaderboard data
         serializer = LeaderboardSerializer(sorted_users, many=True)

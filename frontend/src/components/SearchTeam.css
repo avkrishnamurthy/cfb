@@ -1,0 +1,60 @@
+.team-container {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .conference-group {
+    margin-bottom: 10px;
+  }
+  
+  .conference-button {
+    background-color: #3d84ff;
+    color: white;
+    padding: 8px;
+    font-size: 16px;
+    width: 200px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .conference-button:hover {
+    background-color: #19386d;
+  }
+  
+  .team-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .team-card {
+    margin: 5px;
+  }
+  
+  .team-button {
+    background-color: #f9f9f9;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .team-button:hover {
+    background-color: rgb(193, 193, 193);
+  }
+  
+  .team-info {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .team-image {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  

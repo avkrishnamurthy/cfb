@@ -6,8 +6,8 @@ from .mixins import UserQuerySetMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from api.serializers import UserPublicSerializer
-from cfbdata.models import Prediction, FavoriteTeam, HeismanFinalists
-from cfbdata.serializers import HeismanFinalistsSerializer, FavoriteTeamSerializer, PredictionSerializer
+from cfbdata.models import Prediction, FavoriteTeam, HeismanFinalists, PlayerImages
+from cfbdata.serializers import HeismanFinalistsSerializer, FavoriteTeamSerializer, PredictionSerializer, PlayerImagesSerializer
 
 User = get_user_model()
 
@@ -58,18 +58,31 @@ class UserProfileView(APIView):
         user = get_object_or_404(User, id=user_id)
 
         heisman_finalists = HeismanFinalists.objects.filter(user=user)
+        player_images = []
+        if (heisman_finalists):
+            player_fields = ['player_1', 'player_2', 'player_3', 'player_4', 'player_5']
+            for field_name in player_fields:
+                player_name = getattr(heisman_finalists[0], field_name)
+                if player_name:
+                    player_image = PlayerImages.objects.filter(player=player_name).first()
+                    if player_image:
+                        player_images.append(player_image)
+
         predictions = Prediction.objects.filter(user=user)
         favorite_team = FavoriteTeam.objects.filter(user=user)
         heisman_finalists_data = HeismanFinalistsSerializer(heisman_finalists, many=True).data
         predictions_data = PredictionSerializer(predictions, many=True).data
         favorite_team_data = FavoriteTeamSerializer(favorite_team, many=True).data
+        player_image_data = PlayerImagesSerializer(player_images, many=True).data
 
         profile_data = {
             'user_id': user.id,
             'username': user.username,
             'heisman_finalists': heisman_finalists_data,
             'predictions': predictions_data,
-            'favorite_team': favorite_team_data
+            'favorite_team': favorite_team_data,
+            'player_images': player_image_data
+
         }
 
         return Response(profile_data, status=status.HTTP_200_OK)

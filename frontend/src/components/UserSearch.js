@@ -31,24 +31,28 @@ const UserSearch = () => {
   }
 
   return (
-    <div className="dropdown">
-      <button className="dropbtn" onClick={toggleDropdown}>
-        User Search
-      </button>
-      {showDropdown && (
-        <div className="dropdown-content">
-          <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          <button onClick={handleSearch}>Search</button>
-          {searchResults.map((user) => (
-            <div key={user.id}>
+  <div className="dropdown">
+    <button className="dropbtn" onClick={toggleDropdown}>
+     <strong>User Search</strong>
+    </button>
+    {showDropdown && (
+      <div className="dropdown-content">
+        <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        <button onClick={handleSearch}>Search</button>
+        {searchResults && searchResults.length > 0 ? (
+          searchResults.map((user) => (
+            <div className="user-search-results" key={user.id}>
               <p>Username: {user.username}</p>
-              <button type="button" onClick={() => visitProfile(user.id)}> Visit Profile </button>
+              <button type="button" onClick={() => visitProfile(user.id)}>Visit Profile</button>
             </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+          ))
+        ) : (
+          null
+        )}
+      </div>
+    )}
+  </div>
+);
 };
 
 export default UserSearch;

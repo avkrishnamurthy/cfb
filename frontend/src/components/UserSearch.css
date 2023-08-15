@@ -1,21 +1,21 @@
-/* styles.css (or any other CSS file) */
-/* Style the dropdown button */
 .dropbtn {
-    background-color: #4caf50;
+    background-color: transparent;
     color: white;
-    padding: 16px;
+    padding: 0px;
     font-size: 16px;
     border: none;
     cursor: pointer;
   }
+
+  .dropbtn:hover {
+    color: rgb(188, 188, 188);
+  }
   
-  /* The container <div> - needed to position the dropdown content */
   .dropdown {
     position: relative;
     display: inline-block;
   }
   
-  /* Dropdown Content (Hidden by Default) */
   .dropdown-content {
     display: none;
     position: absolute;
@@ -26,8 +26,11 @@
     z-index: 1;
   }
   
-  /* Show the dropdown menu on hover */
   .dropdown:hover .dropdown-content {
     display: block;
+  }
+
+  .user-search-results {
+    color: black;
   }
   

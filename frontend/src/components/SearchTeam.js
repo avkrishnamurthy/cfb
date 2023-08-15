@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "./SearchTeam.css"
 const SearchTeam = () => {
   const user_id = localStorage.getItem("user_id")
   const [teamsByConference, setTeamsByConference] = useState({});
@@ -67,9 +67,16 @@ const SearchTeam = () => {
     fetchAllTeams(url);
   }, []);
 
-  const toggleConference = (conference) => {
+//   const toggleConference = (conference) => {
+//     setCollapsedConferences((prevCollapsed) => ({
+//       ...prevCollapsed,
+//       [conference]: !prevCollapsed[conference],
+//     }));
+//   };
+
+const toggleConference = (conference) => {
     setCollapsedConferences((prevCollapsed) => ({
-      ...prevCollapsed,
+      ...Object.fromEntries(Object.keys(prevCollapsed).map(key => [key, false])),
       [conference]: !prevCollapsed[conference],
     }));
   };
@@ -106,20 +113,19 @@ const SearchTeam = () => {
   };
 
   return (
-    <div>
+    <div className="team-container">
       {Object.entries(teamsByConference).map(([conference, teams]) => (
-        <div key={conference}>
-          <button onClick={() => toggleConference(conference)}>
+        <div key={conference} className="conference-group">
+          <button className="conference-button" onClick={() => toggleConference(conference)}>
             {conference}
           </button>
           {collapsedConferences[conference] && (
-            <div>
+            <div className="team-list">
               {teams.map((team) => (
-                <div key={team.id}>
-                  {/* Convert the team information into a button */}
-                  <button onClick={() => addFavoriteTeam(team.id)}>
-                    <p>{team.school} {team.mascot}</p>
-                    <img className="team-images" src={team.logos[0]} alt={team.school} />
+                <div key={team.id} className="team-card">
+                  <button className="team-button" onClick={() => addFavoriteTeam(team.id)}>
+                    <p className="team-info">{team.school} {team.mascot}</p>
+                    <img className="team-image" src={team.logos[0]} alt={team.school} />
                   </button>
                 </div>
               ))}

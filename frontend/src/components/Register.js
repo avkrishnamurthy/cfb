@@ -1,6 +1,7 @@
 // import axios from 'axios';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Register.css"
 const Register = () => {
   const [username, setUsername] = useState("");
   const[email, setEmail] = useState("")
@@ -28,12 +29,13 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Create Account</h2>
-      <form onSubmit={handleRegister}>
+      <form className="register-form" onSubmit={handleRegister}>
         <label>
           Username:
           <input
+            className="register-input"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -43,6 +45,7 @@ const Register = () => {
         <label>
           Password:
           <input
+            className="register-input"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -52,13 +55,16 @@ const Register = () => {
         <label>
           Email:
           <input
+            className="register-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         <br />
-        <button type="submit">Create Account</button>
+        <button className="register-button" type="submit">
+          Create Account
+        </button>
       </form>
     </div>
   );

@@ -10,9 +10,15 @@
     border: 1px solid #ccc;
     background-color: #fff;
     cursor: pointer;
+    width: 100px;
   }
   
   .side.selected {
     background-color: blue;
     color: white;
+  }
+
+  .type {
+    padding: 5px;
+    width: 40px;
   }

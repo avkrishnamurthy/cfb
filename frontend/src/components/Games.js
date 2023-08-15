@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
+import {format} from 'date-fns'
 import './Games.css'
 import PredictionSwitch from "./PredictionSwitch";
+import TimestampComponent from "./Timestamp";
+import {AiFillLock} from "react-icons/ai"
 const Games = () => {
   const [games, setGames] = useState([]);
   const [predictions, setPredictions] = useState([]);
@@ -58,10 +61,18 @@ useEffect(() => {
   return (
     <div>
       {games && games.length > 0 ? (
-        <div>
-          {games.map((game) => (
-            <div key={game.id} className='game-container'>
+        <div className='game-cards'>
+            <h1 align="center"> Games Of The Week</h1>
+            <h3 align="center">Week {games[0].week}</h3>
+            <div className="row-one">
+          {games.slice(0, 3).map((game) => (
+            <div key={game.id} className={`game-container ${game.locked ? "locked" : ""}`}>
             <div className='game-button'>
+            {game.locked ? (
+                    <AiFillLock/>
+                ) : (
+                    null
+                )}
               <div className='team-info'>
                 <div className='team-details'>
                   <img src={game.home_team.logos[0]} alt={game.home_team.school} />
@@ -76,12 +87,9 @@ useEffect(() => {
                 </div>
               </div>
               <div className='game-details'>
-                <p>{game.year}</p>
-                <p>{game.week}</p>
-                <p>Locks at {game.lock_time}</p>
-                <p>{game.locked}</p>
                 <p>{game.line}</p>
-                <p>{game.game_id}</p>
+                <TimestampComponent timestamp={game.lock_time}/>
+                <p></p>
                     <div>
                 <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} />
                 <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} />
@@ -91,6 +99,44 @@ useEffect(() => {
           </div>
           
           ))}
+          </div>
+          <div className="row-two">
+          {games.slice(3).map((game) => (
+            <div key={game.id} className={`game-container ${game.locked ? "locked" : ""}`}>
+            <div className='game-button'>
+            {game.locked ? (
+                    <AiFillLock/>
+                ) : (
+                    null
+                )}
+              <div className='team-info'>
+                <div className='team-details'>
+                  <img src={game.home_team.logos[0]} alt={game.home_team.school} />
+                  <h3>{game.home_team.abbreviation}</h3>
+                </div>
+                <div>
+                    vs.
+                </div>
+                <div className='team-details'>
+                  <img src={game.away_team.logos[0]} alt={game.away_team.school} />
+                  <h3>{game.away_team.abbreviation}</h3>
+                </div>
+              </div>
+              <div className='game-details'>
+                <p>{game.line}</p>
+                <TimestampComponent timestamp={game.lock_time}/>
+                <p></p>
+                    <div>
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} />
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          ))}
+
+          </div>
         </div>
       ) : (
         <p>Loading...</p>

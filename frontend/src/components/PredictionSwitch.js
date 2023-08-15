@@ -6,7 +6,6 @@ const PredictionSwitch = (props) => {
     const game = props.game
     const [selectedSide, setSelectedSide] = useState(null);
     const accessToken = localStorage.getItem('access')
-    // const [firstClick, setFirstClick] = useState(false)
 
     const updatePrediction = async (side, prediction_id) => {
         let value = true
@@ -143,7 +142,7 @@ useEffect(() => {
       >
         {game.home_team.abbreviation}
       </button>
-      <div>
+      <div className="type">
             {type}
           </div>
       <button

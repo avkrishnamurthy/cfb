@@ -1,0 +1,23 @@
+.home-container {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .stadium-grid-list {
+    margin-top: 50px;
+    display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 20px;
+          list-style: none;
+  }
+
+
+   .stadium-card img {
+    height: 400px;
+    width: 600px;
+    border: 4px solid blue;
+   }
+
+   .michigan {
+    border: 4px solid blue;
+   }

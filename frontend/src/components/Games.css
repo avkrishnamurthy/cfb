@@ -3,7 +3,17 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 4px solid rgb(113, 241, 113);
+    margin-bottom: 10px;
+    width: 300px;
+  }
+
+  .game-container.locked {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 4px solid red;
     margin-bottom: 10px;
     width: 300px;
   }
@@ -41,11 +51,13 @@
     width: 50px;
     height: 50px;
   }
+
   
   .game-details {
     display: flex;
     flex-direction: column;
-    align-items: flex-end
+    align-items: flex-end;
+    align-items: center;
   }
 
   .toggle-buttons {
@@ -67,4 +79,15 @@
   color: white;
 }
 
+.row-one {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.row-two {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
 /* Rest of your CSS styles... */

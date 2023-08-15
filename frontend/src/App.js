@@ -14,6 +14,8 @@ import Profile from "./pages/ProfilePage"
 import Games from "./pages/GamesPage"
 import Leaderboard from "./pages/LeaderboardPage"
 import Heisman from "./pages/HeismanPage"
+import Footer from "./components/Footer"
+import "./App.css"
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -24,7 +26,8 @@ const App = () => {
   }, [isLoggedIn]);
 
   return (
-    <div>
+    <div className="app-container">
+      <div className="content-container">
         {isLoggedIn ? (
         <LoggedInNavbar onLogout={() => setIsLoggedIn(false)}/>
       ) : (
@@ -45,8 +48,8 @@ const App = () => {
           <Route path="/heisman" element={<Heisman />}/>
           <Route path="*" element={<NoPage/>}/>
         </Routes>
-
-        <div>Footer</div>
+        </div>
+        <Footer/>
     </div>
   )
 }

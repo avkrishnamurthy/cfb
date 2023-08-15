@@ -1,0 +1,42 @@
+/* LoggedInNavbar.css */
+
+.navbar-container {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  .nav-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-list li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+
+  .nav-list li a:hover {
+    color: rgb(188, 188, 188);
+  }
+  
+  .logout-button {
+    background-color: #FF5733;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  
+  .logout-button:hover {
+    background-color: #E03818;
+  }
+  

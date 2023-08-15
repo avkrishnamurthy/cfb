@@ -1,0 +1,87 @@
+.footer {
+    background-color: #1c2331;
+    color: #fff;
+    padding: 0px 0;
+    /* position: absolute; Set the footer to absolute position */
+    width: 100%; /* Take up the full width of the viewport */
+    /* bottom: 0; Place the footer at the bottom */
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    margin-bottom: 100px; /* Adjust the margin to match the footer's height */
+  }
+  
+  .footer-logo img {
+    width: 40px;
+    height: auto;
+  }
+  
+  .footer-logo h3 {
+    margin-left: 10px;
+    font-size: 24px;
+  }
+  
+  .footer-link-list {
+    list-style: none;
+    padding: 0;
+    color: white;
+    font-weight: bold;
+  }
+  .footer-link {
+    color: white;
+  }
+  .footer-link a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .footer-link a:hover {
+    color: #f39c12;
+  }
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+  }
+  
+  .footer-links li {
+    margin-right: 20px;
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-links a:hover {
+    color: #f39c12;
+  }
+  
+  .footer-social a {
+    color: #fff;
+    margin-right: 15px;
+    font-size: 20px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer-social a:hover {
+    color: #f39c12;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .footer-bottom p {
+    font-size: 14px;
+  }
+  
