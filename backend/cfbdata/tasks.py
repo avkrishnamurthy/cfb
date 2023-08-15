@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import heapq
 from cfehome.celery import app
+from cfehome.settings import TIME_ZONE
 from celery import shared_task
 import cfbd
 from cfbd.rest import ApiException
@@ -9,27 +10,30 @@ import os
 from .models import Game, Team, Prediction
 import requests
 from bs4 import BeautifulSoup
-from django.utils import timezone
+from pytz import timezone
+from dateutil import tz
 
+NYC = tz.gettz('America / New_York')  
+start_date = datetime(2023, 8, 29, 2, tzinfo=NYC)
+year = datetime.today().year
+def calculate_current_week():
+    current_date = datetime.now()
+    days_passed = (current_date - start_date).days
+    current_week = max((days_passed // 7) + 1, 1)
+    return current_week
 
-# # @app.task
 # @shared_task
-# def task_one():
-#     print(" task one called and worker is running good")
+# def task_two():
+#     # print(f" task two called with the argument {week} and worker is running good")
+#     # print(year)
+#     # print(time_passed)
+#     print(calculate_current_week())
 #     return "success"
-
-# # @app.task
-# @shared_task
-# def task_two(data, *args, **kwargs):
-#     print(f" task two called with the argument {data} and worker is running good")
-#     return "success"
-
 load_dotenv()
 
 @shared_task
 def score_games():
-    year = 2023
-    week = 1
+    week = calculate_current_week()
     configuration = cfbd.Configuration()
     CFBD_API_KEY = os.getenv('CFBD_API_KEY')
     configuration.api_key['Authorization'] = CFBD_API_KEY
@@ -44,7 +48,7 @@ def score_games():
             favorite, line = (game.line).rsplit(' ', 1)
             if favorite == game_api_response.home_team: spread = float(line) * (-1)
             else: spread = float(line)
-
+            if not game_api_response.home_points or not game_api_response.away_points: continue
             game_results[game_id] = (spread, game_api_response.home_points, game_api_response.away_points)
         except:
             print("Could not find game")
@@ -55,7 +59,8 @@ def score_games():
         home_winner = prediction.home_winner
         home_cover = prediction.home_cover
         prediction_game_id = prediction.game.game_id
-        cur_game = game_results[prediction_game_id]
+        cur_game = game_results.get(prediction_game_id, None)
+        if not cur_game: continue
         score_diff = cur_game[1]-cur_game[2]
         actual_home_winner = score_diff > 0
         actual_home_cover = score_diff > cur_game[0]
@@ -70,10 +75,11 @@ def lock_games():
     games_to_lock = Game.objects.filter(locked=False)
     try:
         for game in games_to_lock:
-            current_time = timezone.now()
+            current_time = datetime.now(timezone('UTC'))
             game_lock_time = game.lock_time
             if current_time > game_lock_time:
                 game.locked = True
+                print("Locked game")
                 game.save()  
             
     except Game.DoesNotExist:
@@ -108,6 +114,11 @@ def fetch_fpi():
 
 @shared_task
 def fetch_games():
+    week = calculate_current_week()
+
+    if Game.objects.filter(week=week, year=year).exists():
+        print("Games have already been fetched.")
+        return
     
     configuration = cfbd.Configuration()
     CFBD_API_KEY = os.getenv('CFBD_API_KEY')
@@ -116,8 +127,6 @@ def fetch_games():
     
     games_api_instance = cfbd.GamesApi(cfbd.ApiClient(configuration))
     lines_api_instance = cfbd.BettingApi(cfbd.ApiClient(configuration))
-    year = 2023
-    week = 1
     maxHeap = []
     team_fpi = fetch_fpi()
     try:
@@ -173,3 +182,4 @@ def fetch_games():
     for _, _, game in maxHeap:
         game.save()
         print("saved game")
+

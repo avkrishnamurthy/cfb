@@ -63,4 +63,4 @@ class PlayerImagesSerializer(serializers.ModelSerializer):
     team = TeamSerializer(read_only=True)
     class Meta:
         model = PlayerImages
-        fields = ['position', 'img', 'team']
+        fields = ['player', 'position', 'img', 'team']

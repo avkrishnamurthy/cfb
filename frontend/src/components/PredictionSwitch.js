@@ -119,7 +119,7 @@ useEffect(() => {
           >
             {game.home_team.abbreviation}
           </button>
-          <div>
+          <div className="type">
             {type}
           </div>
           <div>

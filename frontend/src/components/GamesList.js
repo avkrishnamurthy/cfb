@@ -87,7 +87,7 @@ const PredictionList = ({ predictions }) => {
           To win
         </div>
     <button
-      className={`gs ${(!selectedPredictions[currentSlideIndex].home_winner) ? "selected" : ""}`}
+      className={`gs ${(selectedPredictions[currentSlideIndex].home_winner===false) ? "selected" : ""}`}
     >
       {selectedPredictions[currentSlideIndex].game.away_team.abbreviation}
     </button>
@@ -105,7 +105,7 @@ const PredictionList = ({ predictions }) => {
           To cover
         </div>
     <button
-      className={`gs ${(!selectedPredictions[currentSlideIndex].home_cover) ? "selected" : ""}`}
+      className={`gs ${(selectedPredictions[currentSlideIndex].home_cover===false) ? "selected" : ""}`}
     >
       {selectedPredictions[currentSlideIndex].game.away_team.abbreviation}
     </button>

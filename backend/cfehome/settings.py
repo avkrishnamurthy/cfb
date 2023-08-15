@@ -175,12 +175,21 @@ SIMPLE_JWT = {
 }
 
 CELERY_BEAT_SCHEDULE = {
+    # 'Task_two_schedule' : { 
+    #     'task': 'cfbdata.tasks.task_two',
+    #     'schedule': 10,
+    #     # 'args' : (datetime.now(), year, 0) # arguments for the task
+    # },
     'Fetch_games_schedule': {
         'task': 'cfbdata.tasks.fetch_games',
-        'schedule': 30,
+        'schedule': crontab(hour=6, minute=0, day_of_week=2)
     },
     'Lock_games_schedule': {
         'task': 'cfbdata.tasks.lock_games',
         'schedule': crontab(minute="*/5")
+    },
+    'Score_games_schedule': {
+        'task': 'cfbdata.tasks.score_games',
+        'schedule': crontab(hour=4, minute=0, day_of_week=2)
     }
 }
