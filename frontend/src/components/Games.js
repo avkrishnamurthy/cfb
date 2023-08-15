@@ -8,12 +8,39 @@ const Games = () => {
   const [games, setGames] = useState([]);
   const [predictions, setPredictions] = useState([]);
   const accessToken = localStorage.getItem("access");
-  const week = 1
+  const [week, setWeek] = useState(1)
   const user_id = localStorage.getItem('user_id')
 
 const getPrediction = (gameId) => {
     return predictions.find((prediction) => prediction['game'].game_id === gameId) || null;
   };
+
+
+  useEffect(() => {
+    // Fetch data from the API after the component mounts
+    const fetchGames = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/api/cfbd/games/?week=current`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
+            },
+        });
+        const data = await response.json();
+        // console.log(data)
+        setGames(data.results); // Update the state with the fetched product data
+        if (data.results && data.results[0]) {
+            console.log(data.results[0].week)
+            setWeek(data.results[0].week)
+        }
+        //setA(data['team']['id'])
+      } catch (error) {
+        console.error("Error fetching games: ", error);
+      }
+    };
+
+    fetchGames();
+  }, []); // Run the effect whenever the access token changes
 
 useEffect(() => {
     // Fetch user's predictions for the current week
@@ -33,31 +60,10 @@ useEffect(() => {
     };
 
     fetchPredictions();
-  }, []);
+  }, [games]);
 
 
-  useEffect(() => {
-    // Fetch data from the API after the component mounts
-    const fetchGames = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/api/cfbd/games/?week=current`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
-            },
-        });
-        const data = await response.json();
-        // console.log(data)
-        setGames(data.results); // Update the state with the fetched product data
-        //setA(data['team']['id'])
-      } catch (error) {
-        console.error("Error fetching games: ", error);
-      }
-    };
-
-    fetchGames();
-  }, []); // Run the effect whenever the access token changes
-
+ 
   return (
     <div>
       {games && games.length > 0 ? (

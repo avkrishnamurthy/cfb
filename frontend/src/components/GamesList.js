@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import TimestampComponent from './Timestamp';
 import "./GamesList.css"
 const PredictionList = ({ predictions }) => {
   const [selectedWeek, setSelectedWeek] = useState(1);

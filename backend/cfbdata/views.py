@@ -199,9 +199,11 @@ class PlayerImageView(APIView):
         player_name = self.kwargs.get('player_name')
         try:
             player_image = PlayerImages.objects.get(player=player_name)
-            data = {'position': player_image.position, 'img': player_image.img, 'team': player_image.team}
+            data = {'player': player_image.player, 'position': player_image.position, 'img': player_image.img, 'team': player_image.team}
             serializer = PlayerImagesSerializer(player_image, data=data)
+            print("YAR")
             serializer.is_valid(raise_exception=True)
+            print("HERE")
             return Response(serializer.data, status=status.HTTP_200_OK)
         except PlayerImages.DoesNotExist:
             return Response({'message': 'Player image not found'}, status=status.HTTP_404_NOT_FOUND)

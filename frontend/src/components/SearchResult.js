@@ -123,7 +123,7 @@ const SearchResult = (props) => {
 
   return (
     <div className="search-result">
-        <p>{result.name}, {result.position} <input type="number" min="1" max="5" /><button type="submit">Set as ranking</button></p>
+        <p>{result.name}, {result.position}</p>
         <p>{result.team}</p>
         <label htmlFor="ranking-spot">Ranking Spot:</label>
             <input
