@@ -22,18 +22,11 @@ def calculate_current_week():
     current_week = max((days_passed // 7) + 1, 1)
     return current_week
 
-# @shared_task
-# def task_two():
-#     # print(f" task two called with the argument {week} and worker is running good")
-#     # print(year)
-#     # print(time_passed)
-#     print(calculate_current_week())
-#     return "success"
 load_dotenv()
 
 @shared_task
 def score_games():
-    week = calculate_current_week()
+    week = calculate_current_week()-1
     configuration = cfbd.Configuration()
     CFBD_API_KEY = os.getenv('CFBD_API_KEY')
     configuration.api_key['Authorization'] = CFBD_API_KEY
@@ -67,6 +60,10 @@ def score_games():
         if home_winner == actual_home_winner: score+=1
         if home_cover == actual_home_cover: score+=3
         prediction.score = score
+        prediction.game.home_points = cur_game[1]
+        prediction.game.away_points = cur_game[2]
+        print("Saving prediction")
+        prediction.game.save()
         prediction.save()
 
 

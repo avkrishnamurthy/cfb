@@ -170,9 +170,29 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ['Bearer'],
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=3),
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=30),
 }
+
+# CELERY_BEAT_SCHEDULE = {
+#     # 'Task_two_schedule' : { 
+#     #     'task': 'cfbdata.tasks.task_two',
+#     #     'schedule': 10,
+#     #     # 'args' : (datetime.now(), year, 0) # arguments for the task
+#     # },
+#     'Fetch_games_schedule': {
+#         'task': 'cfbdata.tasks.fetch_games',
+#         'schedule': crontab(hour=6, minute=0, day_of_week=2)
+#     },
+#     'Lock_games_schedule': {
+#         'task': 'cfbdata.tasks.lock_games',
+#         'schedule': crontab(minute="*/5")
+#     },
+#     'Score_games_schedule': {
+#         'task': 'cfbdata.tasks.score_games',
+#         'schedule': crontab(hour=4, minute=0, day_of_week=2)
+#     }
+# }
 
 CELERY_BEAT_SCHEDULE = {
     # 'Task_two_schedule' : { 
@@ -182,14 +202,14 @@ CELERY_BEAT_SCHEDULE = {
     # },
     'Fetch_games_schedule': {
         'task': 'cfbdata.tasks.fetch_games',
-        'schedule': crontab(hour=6, minute=0, day_of_week=2)
+        'schedule': crontab(hour=23, minute=24, day_of_week=2)
     },
     'Lock_games_schedule': {
         'task': 'cfbdata.tasks.lock_games',
-        'schedule': crontab(minute="*/5")
+        'schedule': crontab(minute="*/1")
     },
     'Score_games_schedule': {
         'task': 'cfbdata.tasks.score_games',
-        'schedule': crontab(hour=4, minute=0, day_of_week=2)
+        'schedule': crontab(hour=23, minute=23, day_of_week=2)
     }
 }
