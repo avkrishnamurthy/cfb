@@ -10,6 +10,7 @@ const Games = () => {
   const accessToken = localStorage.getItem("access");
   const [week, setWeek] = useState(1)
   const user_id = localStorage.getItem('user_id')
+  const backendURL = process.env.REACT_APP_API_URL;
 
 const getPrediction = (gameId) => {
     return predictions.find((prediction) => prediction['game'].game_id === gameId) || null;
@@ -20,7 +21,7 @@ const getPrediction = (gameId) => {
     // Fetch data from the API after the component mounts
     const fetchGames = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/cfbd/games/?week=current`, {
+        const response = await fetch(`${backendURL}/api/cfbd/games/?week=current`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
@@ -30,7 +31,6 @@ const getPrediction = (gameId) => {
         // console.log(data)
         setGames(data.results); // Update the state with the fetched product data
         if (data.results && data.results[0]) {
-            console.log(data.results[0].week)
             setWeek(data.results[0].week)
         }
         //setA(data['team']['id'])
@@ -46,7 +46,7 @@ useEffect(() => {
     // Fetch user's predictions for the current week
     const fetchPredictions = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/cfbd/predictions/?week=${week}&user=${user_id}`, {
+        const response = await fetch(`${backendURL}/api/cfbd/predictions/?week=${week}&user=${user_id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${accessToken}`,

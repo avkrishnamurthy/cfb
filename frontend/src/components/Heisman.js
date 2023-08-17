@@ -10,10 +10,11 @@ const Heisman = () => {
     const [updateHeismans, SetUpdateHeismans] = useState(false)
     const [playerSearchResults, setPlayerSearchResults] = useState([])
     const [playerImages, setPlayerImages] = useState({});
+    const backendURL = process.env.REACT_APP_API_URL;
       
     const fetchHeismanFinalists = async (event) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/cfbd/heisman-finalists/?user=${user_id}`, {
+            const response = await fetch(`${backendURL}/api/cfbd/heisman-finalists/?user=${user_id}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -38,7 +39,7 @@ const Heisman = () => {
         const imageMap = {}; // Temporary map to store image data
         for (const playerName of playerNames) {
             try {
-                const imageResponse = await fetch(`http://localhost:8000/api/cfbd/player-image/${playerName}/`, {
+                const imageResponse = await fetch(`${backendURL}/api/cfbd/player-image/${playerName}/`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },

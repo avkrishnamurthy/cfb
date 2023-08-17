@@ -5,6 +5,7 @@ const SearchBar = ({setPlayerSearchResults}) => {
     const [input, setInput] = useState("")
     const accessToken = localStorage.getItem('access')
     const queryRef = useRef('')
+    const backendURL = process.env.REACT_APP_API_URL;
 
     const fetchPlayers = (value) => {
         if (value.length < 4) {
@@ -13,7 +14,7 @@ const SearchBar = ({setPlayerSearchResults}) => {
         }
         queryRef.current = value;
 
-        fetch(`http://localhost:8000/api/cfbd/?search_term=${value}`, {
+        fetch(`${backendURL}/api/cfbd/?search_term=${value}`, {
             headers: {
               Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
             },

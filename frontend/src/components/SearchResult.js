@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import "./SearchResult.css"
 const SearchResult = (props) => {
 
-    const  {REACT_APP_GOOGLE_API_KEY, REACT_APP_CX} = process.env
+    const  {REACT_APP_GOOGLE_API_KEY, REACT_APP_CX, REACT_APP_API_URL} = process.env
 
     const loadGoogleApi = () => {
         const script = document.createElement("script");
@@ -56,7 +56,7 @@ const SearchResult = (props) => {
 
     const fetchTeam = async(playerTeam) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/cfbd/teams/?team=${playerTeam}`, {
+            const response = await fetch(`${REACT_APP_API_URL}/api/cfbd/teams/?team=${playerTeam}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 },
@@ -75,7 +75,7 @@ const SearchResult = (props) => {
         let imageData = null
         let body = null;
         try {
-            const imageResponse = await fetch(`http://localhost:8000/api/cfbd/player-image/${playerName}/`, {
+            const imageResponse = await fetch(`${REACT_APP_API_URL}/api/cfbd/player-image/${playerName}/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
                 },
@@ -103,7 +103,7 @@ const SearchResult = (props) => {
         }
         console.log(body)
 
-        const url = `http://localhost:8000/api/cfbd/heisman-finalists/${rankingSpot}/`;
+        const url = `${REACT_APP_API_URL}/api/cfbd/heisman-finalists/${rankingSpot}/`;
         const response = await fetch(url, {
             method: "POST",
             headers: {

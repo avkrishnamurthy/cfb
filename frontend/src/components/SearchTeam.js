@@ -6,12 +6,13 @@ const SearchTeam = () => {
   const [collapsedConferences, setCollapsedConferences] = useState({});
   const accessToken = localStorage.getItem("access");
   const [favoriteTeam, setFavoriteTeam] = useState([])
+  const backendURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     // Fetch data from the API after the component mounts
     const fetchFavoriteTeam = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/cfbd/favorite-team/${user_id}`, {
+        const response = await fetch(`${backendURL}/api/cfbd/favorite-team/${user_id}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
@@ -63,7 +64,7 @@ const SearchTeam = () => {
   };
 
   useEffect(() => {
-    const url = "http://localhost:8000/api/cfbd/teams/";
+    const url = `${backendURL}/api/cfbd/teams/`;
     fetchAllTeams(url);
   }, []);
 
@@ -83,10 +84,10 @@ const toggleConference = (conference) => {
 
   const addFavoriteTeam = async (team_id) => {
     let method = "POST"
-    let url = "http://localhost:8000/api/cfbd/favorite-team/"
+    let url = `${backendURL}/api/cfbd/favorite-team/`
     if (favoriteTeam) {
         method = "PATCH"
-        url = `http://localhost:8000/api/cfbd/favorite-team/${user_id}/update/`
+        url = `${backendURL}/api/cfbd/favorite-team/${user_id}/update/`
     }
     console.log(team_id)
     try {

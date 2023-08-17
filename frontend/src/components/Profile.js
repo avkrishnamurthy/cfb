@@ -7,11 +7,12 @@ const Profile = () => {
     let { user_id } = useParams();
     const [playerData, setPlayerData] = useState({})
     const accessToken = localStorage.getItem('access')
+    const backendURL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         const fetchProfileData = async(event) => {
             try {
-                const response = await fetch(`http://localhost:8000/api/users/profile/${user_id}/`, {
+                const response = await fetch(`${backendURL}/api/users/profile/${user_id}/`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`

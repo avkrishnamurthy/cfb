@@ -6,6 +6,7 @@ const PredictionSwitch = (props) => {
     const game = props.game
     const [selectedSide, setSelectedSide] = useState(null);
     const accessToken = localStorage.getItem('access')
+    const backendURL = process.env.REACT_APP_API_URL;
 
     const updatePrediction = async (side, prediction_id) => {
         let value = true
@@ -15,7 +16,7 @@ const PredictionSwitch = (props) => {
         if (type==="To cover") body = JSON.stringify({home_cover: value})
 
         try {
-          const response = await fetch(`http://localhost:8000/api/cfbd/predictions/${prediction_id}/update/`, {
+          const response = await fetch(`${backendURL}/api/cfbd/predictions/${prediction_id}/update/`, {
               method: "PATCH",
               headers: {
                   "Content-Type": "application/json",
@@ -57,7 +58,7 @@ const PredictionSwitch = (props) => {
         if (type==="To cover") body = JSON.stringify({home_cover: value, game_id: game.id, week: game.week, year: game.year})
         try {
             
-            const response = await fetch("http://localhost:8000/api/cfbd/predictions/create/", {
+            const response = await fetch(`${backendURL}/api/cfbd/predictions/create/`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

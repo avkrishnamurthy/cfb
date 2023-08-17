@@ -6,10 +6,11 @@ const SearchTeam = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [players, setPlayers] = useState([]);
     const accessToken = localStorage.getItem("access");
+    const backendURL = process.env.REACT_APP_API_URL;
   
     const handleSearch = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/cfbd/?search_term=${searchTerm}`, {
+        const response = await fetch(`${backendURL}/api/cfbd/?search_term=${searchTerm}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
           },

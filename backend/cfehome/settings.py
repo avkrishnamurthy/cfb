@@ -15,12 +15,13 @@ import datetime
 from dotenv import load_dotenv
 from os import getenv
 from celery.schedules import crontab
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_TIMEZONE = "America/New_York"
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +33,13 @@ SECRET_KEY = "django-insecure-q@v09c51u1qq=iiwoxuln4m(&q+r4(^nrw@iqxls!2hbx$^g^p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "0.0.0.0", "localhost"]
+
+if os.environ.get("ALLOWED_HOSTS") is not None:
+    try:
+        ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split(",")
+    except Exception as e:
+        print("Cant set ALLOWED_HOSTS, using default instead")
 
 
 # Application definition
@@ -73,7 +80,6 @@ CORS_ALLOWED_ORIGINS = [
     
 if DEBUG:
     CORS_ALLOWED_ORIGINS += [
-        'http://localhost:8111',
         'http://localhost:3000'
     ]
 
@@ -174,25 +180,9 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=30),
 }
 
-# CELERY_BEAT_SCHEDULE = {
-#     # 'Task_two_schedule' : { 
-#     #     'task': 'cfbdata.tasks.task_two',
-#     #     'schedule': 10,
-#     #     # 'args' : (datetime.now(), year, 0) # arguments for the task
-#     # },
-#     'Fetch_games_schedule': {
-#         'task': 'cfbdata.tasks.fetch_games',
-#         'schedule': crontab(hour=6, minute=0, day_of_week=2)
-#     },
-#     'Lock_games_schedule': {
-#         'task': 'cfbdata.tasks.lock_games',
-#         'schedule': crontab(minute="*/5")
-#     },
-#     'Score_games_schedule': {
-#         'task': 'cfbdata.tasks.score_games',
-#         'schedule': crontab(hour=4, minute=0, day_of_week=2)
-#     }
-# }
+STATIC_URL = "/django_static/"
+STATIC_ROOT = BASE_DIR / "django_static"
+
 
 CELERY_BEAT_SCHEDULE = {
     # 'Task_two_schedule' : { 
@@ -202,14 +192,34 @@ CELERY_BEAT_SCHEDULE = {
     # },
     'Fetch_games_schedule': {
         'task': 'cfbdata.tasks.fetch_games',
-        'schedule': crontab(hour=23, minute=24, day_of_week=2)
+        'schedule': crontab(hour=6, minute=0, day_of_week=2)
     },
     'Lock_games_schedule': {
         'task': 'cfbdata.tasks.lock_games',
-        'schedule': crontab(minute="*/1")
+        'schedule': crontab(minute="*/5")
     },
     'Score_games_schedule': {
         'task': 'cfbdata.tasks.score_games',
-        'schedule': crontab(hour=23, minute=23, day_of_week=2)
+        'schedule': crontab(hour=4, minute=0, day_of_week=2)
     }
 }
+
+# CELERY_BEAT_SCHEDULE = {
+#     # 'Task_two_schedule' : { 
+#     #     'task': 'cfbdata.tasks.task_two',
+#     #     'schedule': 10,
+#     #     # 'args' : (datetime.now(), year, 0) # arguments for the task
+#     # },
+#     'Fetch_games_schedule': {
+#         'task': 'cfbdata.tasks.fetch_games',e
+#         'schedule': crontab(hour=23, minute=24, day_of_week=2)
+#     },
+#     'Lock_games_schedule': {
+#         'task': 'cfbdata.tasks.lock_games',
+#         'schedule': crontab(minute="*/1")
+#     },
+#     'Score_games_schedule': {
+#         'task': 'cfbdata.tasks.score_games',
+#         'schedule': crontab(hour=23, minute=23, day_of_week=2)
+#     }
+# }

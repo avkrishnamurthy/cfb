@@ -5,7 +5,8 @@ const Leaderboard = () => {
   const [topScores, setTopScores] = useState([]);
   const [favoriteTeams, setFavoriteTeams] = useState({});
   const accessToken = localStorage.getItem('access');
-
+  const backendURL = process.env.REACT_APP_API_URL;
+  
   const fetchFavoriteTeams = async () => {
     if (!topScores || topScores.length < 1) {
       return;
@@ -16,7 +17,7 @@ const Leaderboard = () => {
 
     for (const user of users) {
       try {
-        const imageResponse = await fetch(`http://localhost:8000/api/cfbd/favorite-team/${user.user_id}/`, {
+        const imageResponse = await fetch(`${backendURL}/api/cfbd/favorite-team/${user.user_id}/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -35,7 +36,7 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchTopScores = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/cfbd/leaderboard/`, {
+        const response = await fetch(`${backendURL}/api/cfbd/leaderboard/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

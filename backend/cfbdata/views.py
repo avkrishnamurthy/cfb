@@ -6,6 +6,7 @@ from api.mixins import UserQuerySetMixin
 from .serializers import HeismanFinalistsSerializer, PlayerImagesSerializer, PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
 from .models import FavoriteTeam, HeismanFinalists, PlayerImages, Prediction, Team, Game
 import cfbd
+from .tasks import fetch_games
 from cfbd.rest import ApiException
 from django.db.models import Sum
 import os

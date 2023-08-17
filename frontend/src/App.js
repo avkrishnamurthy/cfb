@@ -1,7 +1,6 @@
 // import axios from 'axios';
 import React, {useState, useEffect} from "react"
 import Login from './pages/LoginPage'
-import ProductList from "./pages/ProductListPage"
 import Register from "./pages/RegisterPage"
 import Home from "./pages/HomePage"
 import NoPage from "./pages/NoPage"
@@ -17,6 +16,14 @@ import Heisman from "./pages/HeismanPage"
 import Footer from "./components/Footer"
 import "./App.css"
 const App = () => {
+  const url = {}
+  const debug = true
+  if (debug) {
+   url["url"] = "http://localhost:8000/"
+  }
+  else {
+    url["url"] = "http://0.0.0.0/"
+  }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -39,7 +46,6 @@ const App = () => {
 
           <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />}/>
           <Route path="/create-account" element={<Register />}/>
-          <Route path="/product-list/:username" element={<ProductList/>}/>
           <Route path="/search-player" element={<SearchPlayer/>}/>
           <Route path="/search-team" element={<SearchTeam/>}/>
           <Route path="/profile/:user_id" element={<Profile/>}/>

@@ -5,11 +5,13 @@ import "./Login.css"
 const Login = ({onLogin}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const backendURL = process.env.REACT_APP_API_URL;
+
   let navigate = useNavigate();
 
   const fetchID = async (e) => {
     try {
-        const response = await fetch(`http://localhost:8000/api/users/search/?username=${username}`, {
+        const response = await fetch(`${backendURL}/api/users/search/?username=${username}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -25,7 +27,7 @@ const Login = ({onLogin}) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/token/", {
+      const response = await fetch(`${backendURL}/api/token/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

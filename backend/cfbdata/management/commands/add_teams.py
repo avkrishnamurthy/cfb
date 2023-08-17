@@ -11,6 +11,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Set up CFBD API key
+
+        if Team.objects.exists():
+            print("Teams have already been added.")
+            return
         cfbd_configuration = cfbd.Configuration()
         cfbd_configuration.api_key['Authorization'] = os.getenv('CFBD_API_KEY')
         cfbd_configuration.api_key_prefix['Authorization'] = 'Bearer'
