@@ -2,11 +2,12 @@ import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import GamesList from "./GamesList"
 import "./Profile.css"
+import useTokenRefresh from './useTokenRefresh';
 const Profile = () => {
     const [profileData, setProfileData] = useState({})
     let { user_id } = useParams();
     const [playerData, setPlayerData] = useState({})
-    const accessToken = localStorage.getItem('access')
+    const accessToken = useTokenRefresh();
     const backendURL = process.env.REACT_APP_API_URL;
 
     useEffect(() => {

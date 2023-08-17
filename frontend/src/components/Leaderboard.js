@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Leaderboard.css";
-
+import useTokenRefresh from "./useTokenRefresh";
 const Leaderboard = () => {
   const [topScores, setTopScores] = useState([]);
   const [favoriteTeams, setFavoriteTeams] = useState({});
-  const accessToken = localStorage.getItem('access');
+  const accessToken = useTokenRefresh();
   const backendURL = process.env.REACT_APP_API_URL;
   
   const fetchFavoriteTeams = async () => {

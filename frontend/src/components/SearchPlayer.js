@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 // import { Link, useNavigate } from 'react-router-dom'
-
+import useTokenRefresh from "./useTokenRefresh";
 
 const SearchTeam = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [players, setPlayers] = useState([]);
-    const accessToken = localStorage.getItem("access");
+    const accessToken = useTokenRefresh();
     const backendURL = process.env.REACT_APP_API_URL;
   
     const handleSearch = async () => {

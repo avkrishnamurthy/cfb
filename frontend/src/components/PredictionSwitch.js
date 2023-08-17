@@ -5,7 +5,7 @@ const PredictionSwitch = (props) => {
     const type = props.type
     const game = props.game
     const [selectedSide, setSelectedSide] = useState(null);
-    const accessToken = localStorage.getItem('access')
+    const accessToken = props.accessToken
     const backendURL = process.env.REACT_APP_API_URL;
 
     const updatePrediction = async (side, prediction_id) => {

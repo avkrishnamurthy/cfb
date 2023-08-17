@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import "./SearchResult.css"
 const SearchResult = (props) => {
-
     const  {REACT_APP_GOOGLE_API_KEY, REACT_APP_CX, REACT_APP_API_URL} = process.env
 
     const loadGoogleApi = () => {
@@ -18,7 +17,7 @@ const SearchResult = (props) => {
     const updateHeismans = props.updateHeismans
     const SetUpdateHeismans = props.SetUpdateHeismans
     const [rankingSpot, setRankingSpot] = useState(null)
-    const accessToken = localStorage.getItem('access')
+    const accessToken = props.accessToken
 
       const initGoogleClient = () => {
         /* eslint-disable */
@@ -75,6 +74,7 @@ const SearchResult = (props) => {
         let imageData = null
         let body = null;
         try {
+          console.log(accessToken)
             const imageResponse = await fetch(`${REACT_APP_API_URL}/api/cfbd/player-image/${playerName}/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`, // Include the access token in the request header

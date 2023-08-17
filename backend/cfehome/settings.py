@@ -52,11 +52,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "api",
-    "products",
     "rest_framework",
     "rest_framework.authtoken",
-    "search",
     "rest_framework_simplejwt",
+    'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
     "users",
     "cfbdata"
@@ -167,7 +166,6 @@ auth_classes = [
 ]
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ['rest_framework.authentication.SessionAuthentication',
-                                       'api.authentication.TokenAuthentication',
                                        'rest_framework_simplejwt.authentication.JWTAuthentication',
                                        ],
     "DEFAULT_PERMISSION_CLASSES": ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
@@ -176,8 +174,10 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ['Bearer'],
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=15),
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=30),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=5),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True
 }
 
 STATIC_URL = "/django_static/"
@@ -185,11 +185,6 @@ STATIC_ROOT = BASE_DIR / "django_static"
 
 
 CELERY_BEAT_SCHEDULE = {
-    # 'Task_two_schedule' : { 
-    #     'task': 'cfbdata.tasks.task_two',
-    #     'schedule': 10,
-    #     # 'args' : (datetime.now(), year, 0) # arguments for the task
-    # },
     'Fetch_games_schedule': {
         'task': 'cfbdata.tasks.fetch_games',
         'schedule': crontab(hour=6, minute=0, day_of_week=2)
@@ -203,23 +198,3 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour=4, minute=0, day_of_week=2)
     }
 }
-
-# CELERY_BEAT_SCHEDULE = {
-#     # 'Task_two_schedule' : { 
-#     #     'task': 'cfbdata.tasks.task_two',
-#     #     'schedule': 10,
-#     #     # 'args' : (datetime.now(), year, 0) # arguments for the task
-#     # },
-#     'Fetch_games_schedule': {
-#         'task': 'cfbdata.tasks.fetch_games',e
-#         'schedule': crontab(hour=23, minute=24, day_of_week=2)
-#     },
-#     'Lock_games_schedule': {
-#         'task': 'cfbdata.tasks.lock_games',
-#         'schedule': crontab(minute="*/1")
-#     },
-#     'Score_games_schedule': {
-#         'task': 'cfbdata.tasks.score_games',
-#         'schedule': crontab(hour=23, minute=23, day_of_week=2)
-#     }
-# }

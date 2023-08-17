@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-
+import useTokenRefresh from "./useTokenRefresh";
 const FavoriteTeam = ({user_id}) => {
   const [favoriteTeam, setFavoriteTeam] = useState([]);
-  const accessToken = localStorage.getItem("access");
+  const accessToken = useTokenRefresh();
   const backendURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     // Fetch data from the API after the component mounts

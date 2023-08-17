@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./SearchTeam.css"
+import useTokenRefresh from "./useTokenRefresh";
 const SearchTeam = () => {
   const user_id = localStorage.getItem("user_id")
   const [teamsByConference, setTeamsByConference] = useState({});
   const [collapsedConferences, setCollapsedConferences] = useState({});
-  const accessToken = localStorage.getItem("access");
+  const accessToken = useTokenRefresh();
   const [favoriteTeam, setFavoriteTeam] = useState([])
   const backendURL = process.env.REACT_APP_API_URL;
 

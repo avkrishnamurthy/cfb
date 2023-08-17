@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import SearchResultList from './SearchResultList';
+import useTokenRefresh from './useTokenRefresh';
 import "./Heisman.css"
 const Heisman = () => {
 
     const [heismanFinalists, setHeismanFinalists] = useState({})
-    const accessToken = localStorage.getItem('access')
+    const accessToken = useTokenRefresh();
     const user_id = localStorage.getItem("user_id")
     const [updateHeismans, SetUpdateHeismans] = useState(false)
     const [playerSearchResults, setPlayerSearchResults] = useState([])
@@ -22,7 +23,6 @@ const Heisman = () => {
             });
             const data = await response.json();
             setHeismanFinalists(data.results[0])
-            console.log(data.results[0])
             
             }
             
@@ -112,99 +112,9 @@ const Heisman = () => {
 </div>
 
 <div className="search-bar-container">
-            <SearchBar setPlayerSearchResults={setPlayerSearchResults}/> 
-            <SearchResultList playerSearchResults={playerSearchResults} updateHeismans={updateHeismans} SetUpdateHeismans={SetUpdateHeismans}/>
+            <SearchBar setPlayerSearchResults={setPlayerSearchResults} accessToken={accessToken}/> 
+            <SearchResultList playerSearchResults={playerSearchResults} updateHeismans={updateHeismans} SetUpdateHeismans={SetUpdateHeismans} accessToken={accessToken}/>
         </div>
-
-        {/* <div>
-            <h2> Heisman Finalists</h2>
-            {heismanFinalists ? (
-            <div>
-                <ol className="heisman-list">
-                    <li>{heismanFinalists.player_1}</li>
-                    {playerImages[heismanFinalists.player_1] ? (
-                            <div>
-                                <p>{playerImages[heismanFinalists.player_1].position}</p>
-                                <img src={playerImages[heismanFinalists.player_1].img} alt={heismanFinalists.player_1} />
-                                {playerImages[heismanFinalists.player_1].team ? (
-                                    <img src={playerImages[heismanFinalists.player_1].team.logos[0]} alt={heismanFinalists.player_1 + ' Team Logo'} />
-                                ) : (
-                                    <div></div>
-                                )}
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
-                    <li>{heismanFinalists.player_2}</li>
-                    {playerImages[heismanFinalists.player_2] ? (
-                            <div>
-                                <p>{playerImages[heismanFinalists.player_2].position}</p>
-                                <img src={playerImages[heismanFinalists.player_2].img} alt={heismanFinalists.player_2} />
-                                {playerImages[heismanFinalists.player_2].team ? (
-                                    <img src={playerImages[heismanFinalists.player_2].team.logos[0]} alt={heismanFinalists.player_2 + ' Team Logo'} />
-                                ) : (
-                                    <div></div>
-                                )}
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
-                    <li>{heismanFinalists.player_3}</li>
-                    {playerImages[heismanFinalists.player_3] ? (
-                            <div>
-                                <p>{playerImages[heismanFinalists.player_3].position}</p>
-                                <img src={playerImages[heismanFinalists.player_3].img} alt={heismanFinalists.player_3} />
-                                {playerImages[heismanFinalists.player_3].team ? (
-                                    <img src={playerImages[heismanFinalists.player_3].team.logos[0]} alt={heismanFinalists.player_3 + ' Team Logo'} />
-                                ) : (
-                                    <div></div>
-                                )}
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
-                    <li>{heismanFinalists.player_4}</li>
-                    {playerImages[heismanFinalists.player_4] ? (
-                            <div>
-                                <p>{playerImages[heismanFinalists.player_4].position}</p>
-                                <img src={playerImages[heismanFinalists.player_4].img} alt={heismanFinalists.player_4} />
-                                {playerImages[heismanFinalists.player_4].team ? (
-                                    <img src={playerImages[heismanFinalists.player_4].team.logos[0]} alt={heismanFinalists.player_4 + ' Team Logo'} />
-                                ) : (
-                                    <div></div>
-                                )}
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
-                    <li>{heismanFinalists.player_5}</li>
-                    {playerImages[heismanFinalists.player_5] ? (
-                            <div>
-                                <p>{playerImages[heismanFinalists.player_5].position}</p>
-                                <img src={playerImages[heismanFinalists.player_5].img} alt={heismanFinalists.player_5} />
-                                {playerImages[heismanFinalists.player_5].team ? (
-                                    <img src={playerImages[heismanFinalists.player_5].team.logos[0]} alt={heismanFinalists.player_5 + ' Team Logo'} />
-                                ) : (
-                                    <div></div>
-                                )}
-                            </div>
-                        ) : (
-                            <div></div>
-                        )}
-                </ol>
-            </div>
-            ) : (
-                <div>
-                <ol>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ol>
-            </div>
-            )}
-        </div> */}
     </div>
     );
 };

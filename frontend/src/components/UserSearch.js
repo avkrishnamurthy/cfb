@@ -5,16 +5,16 @@ const UserSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const accessToken = localStorage.getItem("access");
+  // const accessToken = localStorage.getItem("")
   const backendURL = process.env.REACT_APP_API_URL;
 
   const navigate = useNavigate();
   const handleSearch = async () => {
     try {
       const response = await fetch(`${backendURL}/api/users/search/?username=${searchTerm}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
-        },
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
+        // },
       });
       const data = await response.json();
       setSearchResults(data);

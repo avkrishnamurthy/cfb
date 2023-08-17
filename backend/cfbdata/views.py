@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, generics, status
+from rest_framework.permissions import IsAuthenticated
 from api.mixins import UserQuerySetMixin
 from .serializers import HeismanFinalistsSerializer, PlayerImagesSerializer, PlayerSerializer, FavoriteTeamSerializer, PredictionSerializer, TeamSerializer, GameSerializer, LeaderboardSerializer
 from .models import FavoriteTeam, HeismanFinalists, PlayerImages, Prediction, Team, Game
@@ -17,6 +18,7 @@ load_dotenv()
 class ListTeamsAPIView(generics.ListAPIView):
     queryset=Team.objects.all()
     serializer_class = TeamSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
@@ -29,7 +31,7 @@ class ListTeamsAPIView(generics.ListAPIView):
         
 
 class ListPlayersAPIView(APIView):
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
         search_term = request.GET.get('search_term', '')
         configuration = cfbd.Configuration()
@@ -50,6 +52,7 @@ class ListPlayersAPIView(APIView):
 class GamesListAPIView(generics.ListAPIView):
     queryset= Game.objects.all()
     serializer_class = GameSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
@@ -63,6 +66,7 @@ class GamesListAPIView(generics.ListAPIView):
 class PredictionCreateAPIView(generics.CreateAPIView):
     queryset = Prediction.objects.all()
     serializer_class = PredictionSerializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         game = Game.objects.get(id=request.data['game_id'])
@@ -80,6 +84,7 @@ class PredictionCreateAPIView(generics.CreateAPIView):
 class PredictionUpdateAPIView(generics.UpdateAPIView):
     queryset = Prediction.objects.all()
     serializer_class = PredictionSerializer
+    permission_classes = [IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -101,6 +106,7 @@ class PredictionUpdateAPIView(generics.UpdateAPIView):
 class PredictionListAPIView(generics.ListAPIView):
     queryset = Prediction.objects.all()
     serializer_class = PredictionSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
@@ -115,6 +121,7 @@ class PredictionListAPIView(generics.ListAPIView):
         return qs
 
 class LeaderboardListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         # Calculate scores and aggregate data
         predictions = Prediction.objects.select_related('user').all()
@@ -128,6 +135,7 @@ class LeaderboardListAPIView(APIView):
 class FavoriteTeamCreateAPIView(generics.CreateAPIView):
     queryset = FavoriteTeam.objects.all()
     serializer_class = FavoriteTeamSerializer
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user, team_id=self.request.data['team_id'])
@@ -136,7 +144,9 @@ class FavoriteTeamCreateAPIView(generics.CreateAPIView):
 class FavoriteTeamUpdateAPIView(UserQuerySetMixin, generics.UpdateAPIView):
     queryset = FavoriteTeam.objects.all()
     serializer_class = FavoriteTeamSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'user_id'
+    
 
     def perform_update(self, serializer):
         serializer.save(user=self.request.user, team_id=self.request.data['team_id'])
@@ -145,6 +155,7 @@ class FavoriteTeamUpdateAPIView(UserQuerySetMixin, generics.UpdateAPIView):
 class FavoriteTeamDetailAPIView(generics.RetrieveAPIView):
     queryset = FavoriteTeam.objects.all()
     serializer_class = FavoriteTeamSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'user_id'
 
     # def get_object(self):
@@ -157,6 +168,7 @@ class FavoriteTeamDetailAPIView(generics.RetrieveAPIView):
 class HeismanFinalistListAPIView(generics.ListAPIView):
     queryset = HeismanFinalists.objects.all()
     serializer_class = HeismanFinalistsSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
@@ -169,6 +181,7 @@ class HeismanFinalistListAPIView(generics.ListAPIView):
 class HeismanFinalistCreateUpdateAPIView(generics.CreateAPIView, generics.UpdateAPIView):
     queryset = HeismanFinalists.objects.all()
     serializer_class = HeismanFinalistsSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self, *args, **kwargs):
         return HeismanFinalists.objects.filter(user=self.request.user)
@@ -196,6 +209,7 @@ class HeismanFinalistCreateUpdateAPIView(generics.CreateAPIView, generics.Update
         serializer.save(**kw)
 
 class PlayerImageView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         player_name = self.kwargs.get('player_name')
         try:

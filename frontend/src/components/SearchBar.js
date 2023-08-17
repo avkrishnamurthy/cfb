@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react'
 import {FaSearch} from "react-icons/fa"
 import "./SearchBar.css"
-const SearchBar = ({setPlayerSearchResults}) => {
+const SearchBar = ({setPlayerSearchResults, accessToken}) => {
+    // const setPlayerSearchResults = props.setPlayerSearchResults
+    // const accessToken = props.accessToken
     const [input, setInput] = useState("")
-    const accessToken = localStorage.getItem('access')
     const queryRef = useRef('')
     const backendURL = process.env.REACT_APP_API_URL;
 

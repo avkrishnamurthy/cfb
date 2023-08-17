@@ -4,10 +4,11 @@ import './Games.css'
 import PredictionSwitch from "./PredictionSwitch";
 import TimestampComponent from "./Timestamp";
 import {AiFillLock} from "react-icons/ai"
+import useTokenRefresh from "./useTokenRefresh";
 const Games = () => {
   const [games, setGames] = useState([]);
   const [predictions, setPredictions] = useState([]);
-  const accessToken = localStorage.getItem("access");
+  const accessToken = useTokenRefresh();
   const [week, setWeek] = useState(1)
   const user_id = localStorage.getItem('user_id')
   const backendURL = process.env.REACT_APP_API_URL;
@@ -97,8 +98,8 @@ useEffect(() => {
                 <TimestampComponent timestamp={game.lock_time}/>
                 <p></p>
                     <div>
-                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} />
-                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} />
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} accessToken={accessToken}/>
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} accessToken={accessToken}/>
                 </div>
               </div>
             </div>
@@ -133,8 +134,8 @@ useEffect(() => {
                 <TimestampComponent timestamp={game.lock_time}/>
                 <p></p>
                     <div>
-                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} />
-                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} />
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To win"} game={game} accessToken={accessToken}/>
+                <PredictionSwitch prediction={(getPrediction(game.game_id))} type={"To cover"} game={game} accessToken={accessToken}/>
                 </div>
               </div>
             </div>

@@ -15,6 +15,7 @@ const Login = ({onLogin}) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem('access')}`
           }
         });
         const data = await response.json();
