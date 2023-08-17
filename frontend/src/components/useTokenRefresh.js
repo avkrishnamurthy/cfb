@@ -25,7 +25,6 @@ const useTokenRefresh = () => {
         const newRefreshToken = data.refresh;
         localStorage.setItem('access', newAccessToken);
         localStorage.setItem('refresh', newRefreshToken);
-        console.log("new tokens")
         setAccessToken(newAccessToken);
         setRefToken(newRefreshToken);
       } else {
@@ -40,11 +39,9 @@ const useTokenRefresh = () => {
   useEffect(() => {
     const checkTokenExpiry = () => {
       if (accessToken && jwt_decode(accessToken).exp < Date.now() / 1000) {
-        console.log("refreshing")
         refreshToken();
       }
       else {
-        console.log("not refreshing")
       }
     };
 

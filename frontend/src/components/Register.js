@@ -18,10 +18,8 @@ const Register = () => {
         },
         body: JSON.stringify({ username, password, email }),
       });
-      console.log("response", response)
       
       const data = await response.json();
-      console.log("data", data)
       navigate("/login")
 
     } catch (error) {

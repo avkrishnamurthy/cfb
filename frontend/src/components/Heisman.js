@@ -54,7 +54,6 @@ const Heisman = () => {
         }
 
         // Update the state with the stored image data
-        console.log("Image map", (imageMap))
         setPlayerImages(imageMap);
     }
     

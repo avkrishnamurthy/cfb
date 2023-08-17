@@ -90,7 +90,6 @@ const toggleConference = (conference) => {
         method = "PATCH"
         url = `${backendURL}/api/cfbd/favorite-team/${user_id}/update/`
     }
-    console.log(team_id)
     try {
       const response = await fetch(url, {
         method: method,

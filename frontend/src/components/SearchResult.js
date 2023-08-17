@@ -74,7 +74,6 @@ const SearchResult = (props) => {
         let imageData = null
         let body = null;
         try {
-          console.log(accessToken)
             const imageResponse = await fetch(`${REACT_APP_API_URL}/api/cfbd/player-image/${playerName}/`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`, // Include the access token in the request header
@@ -83,13 +82,12 @@ const SearchResult = (props) => {
             imageData = await imageResponse.json();
         }
         catch {
-            console.log("Here")
+            console.log("Failed to fetch player image")
         }
 
         if (!imageData || !imageData.img) {
             const img_resp = await executeGoogleSearch(playerName, playerTeam);
             const team_resp = await fetchTeam(playerTeam);
-            console.log(team_resp)
             if (team_resp.results) {
                 body = JSON.stringify({ player_name: playerName, player_img_url: img_resp.result.items[0].link, team_id: team_resp.results[0].id, position: position})
             }
@@ -101,7 +99,6 @@ const SearchResult = (props) => {
         else {
             body = JSON.stringify({player_name: playerName})
         }
-        console.log(body)
 
         const url = `${REACT_APP_API_URL}/api/cfbd/heisman-finalists/${rankingSpot}/`;
         const response = await fetch(url, {

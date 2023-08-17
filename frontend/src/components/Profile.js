@@ -28,7 +28,6 @@ const Profile = () => {
                         for (let i = 0; i<data.player_images.length; i++) {
                             player_map[data.player_images[i]['player']] = data.player_images[i]
                         }
-                        console.log(player_map)
                         setPlayerData(player_map)
                     }
                 }
@@ -39,28 +38,7 @@ const Profile = () => {
             console.error("Error fetching heisman finalists: ", error);
             }
         }
-        // const fetchProfileData = async(event) => {
-        //     try {
-        //         const response = await fetch(`http://localhost:8000/api/users/profile/${user_id}/`, {
-        //         method: "GET",
-        //         headers: {
-        //             Authorization: `Bearer ${accessToken}`
-        //         }
-        //         });
-        //         const data = await response.json();
-        //         console.log(data)
-        //         if (response.status === 200 || response.status === 201) {
-        //             setProfileData(data)
-        //         }
-
-        //     }
-                
-        //     catch (error) {
-        //     console.error("Error fetching heisman finalists: ", error);
-        //     }
-        // }
         fetchProfileData();
-        // fetchHeismanImage();
     }, [user_id]);
 
   return (
