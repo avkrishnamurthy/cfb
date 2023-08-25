@@ -8,7 +8,7 @@ The backend is created in Python with the following technologies: the django res
 
 ## See it in action
 
-[Watch the demo](Error)
+[Watch the demo](https://www.youtube.com/watch?v=21Er8juIJAY)
 
 ## How to run
 
