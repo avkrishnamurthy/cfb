@@ -41,7 +41,7 @@ You should currently be in the ```cfb``` directory. If you are not, make sure yo
 
 ```sudo docker-compose build```
 
-This may take a few minutes to finish. If there are any errors, make sure you have set your .env file correctly.
+This may take a few minutes to finish. If there are any errors, make sure you have set your .env file correctly. If you encounter issues pulling Docker images, try pulling the image manually using `docker pull <image-name>:<tag>`.
 
 Once this has finished successfully, enter the following to run the containers:
 
