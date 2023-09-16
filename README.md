@@ -29,7 +29,7 @@ To finish up the configuration for the custom google search API, we will also ne
 
 The steps to create this search engine can be found in the following video:
 
-https://github.com/avkrishnamurthy/cfb/assets/46771241/ff51859e-4865-4cba-86a7-ee75c6341d0f
+https://github.com/avkrishnamurthy/cfb/assets/46771241/d7a433d6-d378-4cde-94f5-8be17d11282b
 
 As seen at the end of the video above, what we want is that search engine ID. With that, we can now set the last environment variable in our .env file by adding the following line:
 
